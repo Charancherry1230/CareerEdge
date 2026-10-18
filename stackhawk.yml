@@ -1,0 +1,8 @@
+app:
+  applicationId: ${APP_ID:9c026dcb-fc48-4078-8820-b1874a5e8126}
+  env: ${APP_ENV:Development}
+  host: ${APP_HOST:http://localhost:8090}
+
+tags:
+  - name: _STACKHAWK_AGENT
+    value: ${HAWK_AGENT:none}
