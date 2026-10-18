@@ -1,5 +1,5 @@
 <?php
-// iGenuine CareerEdge: emails Register and Contact Us submissions to the helpdesk.
+// iGenuine FresherXEdge: emails Register and Contact Us submissions to the helpdesk.
 // Same approach as igenuinelearning.com's send_mail.php: PHP mail() on the host.
 
 header('Content-Type: application/json; charset=utf-8');
@@ -61,7 +61,7 @@ if ($type === 'registration') {
         if ($fields[$k] === '') $errors[] = $k;
     }
     if (!is_numeric($fields['CGPA']) || $fields['CGPA'] < 0 || $fields['CGPA'] > 10) $errors[] = 'cgpa';
-    $subject = 'New CareerEdge registration: ' . $name;
+    $subject = 'New FresherXEdge registration: ' . $name;
 } else {
     $message = isset($_POST['message']) && is_string($_POST['message'])
         ? cut(trim($_POST['message']), 4000) : '';
@@ -72,14 +72,14 @@ if ($type === 'registration') {
         'Phone'        => $phone,
         'Organization' => line('organization') ?: '—',
     ];
-    $subject = 'CareerEdge enquiry: ' . $name;
+    $subject = 'FresherXEdge enquiry: ' . $name;
 }
 
 if ($errors) {
     reply(422, ['ok' => false, 'error' => 'Please check: ' . implode(', ', $errors)]);
 }
 
-$body = ($type === 'registration' ? "New registration from the CareerEdge website\n\n" : "New enquiry from the CareerEdge Contact Us form\n\n");
+$body = ($type === 'registration' ? "New registration from the FresherXEdge website\n\n" : "New enquiry from the FresherXEdge Contact Us form\n\n");
 foreach ($fields as $label => $value) {
     $body .= str_pad($label . ':', 20) . $value . "\n";
 }
@@ -89,11 +89,11 @@ if ($type === 'contact') {
 $body .= "\n—\nSubmitted " . date('d M Y, H:i') . ' from ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown IP') . "\n";
 
 $headers = implode("\r\n", [
-    'From: iGenuine CareerEdge <' . FROM . '>',
+    'From: iGenuine FresherXEdge <' . FROM . '>',
     'Reply-To: ' . $email,             // validated above, safe in a header
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'X-Mailer: CareerEdge',
+    'X-Mailer: FresherXEdge',
 ]);
 
 $sent = @mail(TO, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, $headers, '-f' . FROM);

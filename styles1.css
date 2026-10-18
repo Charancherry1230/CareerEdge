@@ -1,5 +1,5 @@
 /* ==========================================================
-   iGenuine CareerEdge (index1.html)
+   iGenuine FresherXEdge (index1.html)
    Senior Frontend Design System
    Exact Brand Palette: Blue, Orange, White
    - Navy/Deep Blue: #0c233c, #123456, #184572
@@ -1338,64 +1338,6 @@ ul, ol {
   border-radius: var(--radius-pill);
 }
 
-/* ---------- FAQ Section ---------- */
-.faq-accordion {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-.faq-tile {
-  background: var(--white);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 22px 24px;
-  cursor: pointer;
-  transition: all var(--trans-fast);
-}
-.faq-tile:hover {
-  border-color: var(--blue-400);
-  box-shadow: var(--shadow-xs);
-}
-.faq-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  font-size: 16.5px;
-  font-weight: 700;
-  color: var(--blue-900);
-}
-.faq-icon-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--blue-50);
-  display: grid;
-  place-items: center;
-  color: var(--blue-900);
-  font-size: 16px;
-  font-weight: 700;
-  transition: transform var(--trans-fast);
-}
-.faq-tile.is-open .faq-icon-btn {
-  transform: rotate(45deg);
-  background: var(--orange-500);
-  color: var(--white);
-}
-.faq-body {
-  display: none;
-  font-size: 14.5px;
-  color: var(--ink-secondary);
-  line-height: 1.65;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-subtle);
-}
-.faq-tile.is-open .faq-body {
-  display: block;
-  animation: fadeIn 0.25s ease;
-}
-
 /* ---------- Site Footer ---------- */
 .site-footer {
   background: var(--blue-950);
@@ -1556,9 +1498,6 @@ ul, ol {
   }
   .directory-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
-  .faq-accordion {
-    grid-template-columns: 1fr;
   }
 }
 

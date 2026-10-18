@@ -1,5 +1,5 @@
 /**
- * iGenuine CareerEdge v2 (app1.js)
+ * iGenuine FresherXEdge v2 (app1.js)
  * Clean, modern interactive JavaScript engine
  * Follows senior frontend engineering best practices.
  */
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
       tags: ["Basic Academic Syllabus", "Standard Projects", "General Applications", "Uncertain Placement Timelines"]
     },
     careeredge: {
-      title: "CareerEdge Industry-Ready Engineer",
+      title: "FresherXEdge Industry-Ready Engineer",
       desc: "Specialized deep-skilling in high-demand domains (Java/DSA, VLSI, Embedded, IoT), production-standard capstone builds, diagnostic scorecards, and facilitated hiring across 70+ enterprises.",
       tags: ["Deep Domain Mastery", "Production Lab Rigor", "SME 1-on-1 Feedback", "100% Placement-Linked Refund"]
     }
@@ -369,16 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Populate all 123 companies on init
   updateDirectory();
-
-  // ---------- FAQ Accordion ----------
-  const faqTiles = document.querySelectorAll('.faq-tile');
-  faqTiles.forEach(tile => {
-    tile.addEventListener('click', () => {
-      const isOpen = tile.classList.contains('is-open');
-      faqTiles.forEach(t => t.classList.remove('is-open'));
-      if (!isOpen) tile.classList.add('is-open');
-    });
-  });
 
   // ---------- Back to Top Button ----------
   const backTop = document.getElementById('back-to-top-btn');
