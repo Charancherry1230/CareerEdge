@@ -3,574 +3,1134 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self';">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>iGenuine CareerEdge | iGenuine Learning</title>
-  <meta name="description" content="An intensive, industry-aligned programme to transform engineering graduates into industry-ready professionals with deep technical skills and real career opportunities.">
+  <title>iGenuine CareerEdge | Learn Deep. Skill Smart. Launch Strong.</title>
+  <meta name="description" content="Flagship career-acceleration initiative of iGenuine Learning. Domain-specific deep skilling in Java/DSA, VLSI, Embedded Systems, and IoT with guaranteed placement-enabled drives across 70+ partner enterprises.">
+  
+  <!-- Modern Clean Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css">
-  <script src="app.js" defer></script>
+  
+  <style>
+    /* Eligibility Section Perfect Visual Balance & Vertical Alignment */
+    .eligibility-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 36px;
+      align-items: stretch;
+    }
+    .elig-rule-cards {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      height: 100%;
+    }
+    .elig-rule {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 24px;
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      transition: all var(--trans-fast);
+    }
+    .elig-rule:hover {
+      border-color: var(--blue-400);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-xs);
+    }
+    .elig-rule__content {
+      flex: 1;
+    }
+    .elig-rule__content strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--blue-900);
+      margin-bottom: 4px;
+    }
+    .elig-rule__content p {
+      font-size: 14px;
+      color: var(--ink-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .elig-profiler {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 32px 28px;
+    }
+    @media (max-width: 1024px) {
+      .eligibility-layout {
+        grid-template-columns: 1fr;
+      }
+      .elig-rule {
+        padding: 18px 20px;
+      }
+    }
+    /* Sector Tabs & Differentiated Company Tiles */
+    .sector-tabs-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .sector-tabs {
+      display: inline-flex;
+      background: var(--surface-subtle);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-pill);
+      padding: 6px;
+      gap: 6px;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .sector-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue-900);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all var(--trans-fast);
+      white-space: nowrap;
+    }
+    .sector-tab-btn:hover {
+      background: rgba(28, 100, 184, 0.08);
+    }
+    .sector-tab-btn.is-active {
+      background: var(--blue-900);
+      color: var(--white);
+      box-shadow: 0 4px 14px rgba(12, 35, 60, 0.2);
+    }
+    .tab-count {
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 122, 22, 0.2);
+      color: var(--orange-600);
+    }
+    .sector-tab-btn.is-active .tab-count {
+      background: var(--orange-500);
+      color: var(--white);
+    }
+    .company-tile {
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 86px;
+      cursor: pointer;
+      transition: all var(--trans-fast);
+    }
+    .company-tile:hover {
+      transform: translateY(-3px);
+      border-color: var(--orange-400);
+      box-shadow: 0 8px 20px rgba(12, 35, 60, 0.08);
+    }
+    .company-tile.is-active {
+      border: 2px solid var(--orange-500);
+      box-shadow: 0 6px 18px rgba(255, 122, 22, 0.25);
+    }
+    .tile-sector-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 2px 5px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .tile-sector-badge--it {
+      background: rgba(28, 100, 184, 0.1);
+      color: var(--blue-700);
+    }
+    .tile-sector-badge--core {
+      background: rgba(255, 122, 22, 0.14);
+      color: var(--orange-600);
+    }
+    .company-tile img {
+      max-height: 32px;
+      max-width: 82%;
+      width: auto;
+      object-fit: contain;
+      transition: transform var(--trans-fast);
+    }
+    .company-tile:hover img {
+      transform: scale(1.05);
+    }
+    .company-tile-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--blue-900);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .companies-counter-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue-900);
+      background: var(--surface-subtle);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-light);
+    }
+  </style>
+  
+  <!-- Company Database & Interactive Engine -->
   <script src="companies-data.js" defer></script>
-  <script src="companies.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
 
-<!-- Shared SVG icon set (line icons, stroke = currentColor) -->
+<!-- Dynamic Scroll Progress Line -->
+<div id="scroll-progress" aria-hidden="true"></div>
+
+<!-- Shared SVG Icon Assets -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2zM22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></symbol>
-    <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></symbol>
-    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 17v-6M11 17V7M16 17v-4"/></symbol>
-    <symbol id="i-case" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
-    <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></symbol>
-    <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></symbol>
-    <symbol id="i-chip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></symbol>
-    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
-    <symbol id="i-signal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.2"/></symbol>
-    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
-    <symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol>
-    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
-    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M16 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5.2-5-5.8"/></symbol>
-    <symbol id="i-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
-    <symbol id="i-grad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></symbol>
-    <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
-    <symbol id="i-percent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5L5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
-    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5"/></symbol>
-    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
-    <symbol id="i-linkedin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v5M8 8v.01M12 16v-5c0-1.5 3-2 3 0v5"/></symbol>
-    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l16 16M20 4L4 20"/></symbol>
-    <symbol id="i-youtube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></symbol>
-    <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><polyline points="9 12 11 14 15 10"/></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="icon-chip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+    <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="icon-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></symbol>
+    <symbol id="icon-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="icon-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="icon-grad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+    <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></symbol>
+    <symbol id="icon-map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
   </defs>
 </svg>
 
-<a class="skip-link" href="#main">Skip to content</a>
-
-<!-- ============ HEADER ============ -->
+<!-- ============ FLOATING HEADER ============ -->
 <header class="site-header" id="top">
-  <div class="container header-inner">
-    <a class="brand" href="#top" aria-label="iGenuine Learning home">
-      <img src="assets/logo.png" alt="iGenuine Learning" width="132" height="52">
+  <div class="header-inner">
+    <a class="brand-wrap" href="#top" aria-label="iGenuine CareerEdge Home">
+      <img src="assets/logo.png" alt="iGenuine Learning" width="138" height="40">
+      <span class="brand-tag">CareerEdge</span>
     </a>
 
-    <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+    <!-- Exactly six required navigation items in specified order -->
+    <nav class="primary-nav" id="primary-nav" aria-label="Primary Navigation">
       <a href="#about" aria-current="page">About</a>
       <a href="#highlights">Highlights</a>
       <a href="#deliverables">Deliverables</a>
       <a href="#companies">Participating Companies</a>
-      <a class="nav-auth-link nav-auth-link--login" href="/corpx-edge/admin-login.php">Login</a>
-      <a class="nav-auth-link nav-auth-link--register" href="/corpx-edge/register.php">Register</a>
+      <a href="#contact">Contact</a>
+      <a href="#faq">FAQ</a>
+      <div class="mobile-auth-links">
+        <a class="btn-login" href="/corpx-edge/admin-login.php">Login</a>
+        <a class="btn btn-primary btn-sm" href="/corpx-edge/register.php">Register</a>
+      </div>
     </nav>
 
+    <!-- Desktop Action Group -->
     <div class="header-actions">
-      <a class="btn btn--ghost btn--login" href="/corpx-edge/admin-login.php">Login</a>
-      <a class="btn btn--primary btn--nav" href="/corpx-edge/register.php">Register</a>
+      <a class="btn-login" href="/corpx-edge/admin-login.php">Login</a>
+      <a class="btn btn-primary btn-sm" href="/corpx-edge/register.php">Register</a>
     </div>
 
-    <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu">
-      <span></span><span></span><span></span>
+    <!-- Mobile Menu Button -->
+    <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
   </div>
 </header>
 
 <main id="main">
 
-<!-- ============ HERO ============ -->
-<section class="hero" aria-labelledby="hero-title">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow">iGenuine CareerEdge</p>
-      <h1 id="hero-title" class="hero-title">
-        <span class="hero-title__line">Learn Deep.</span>
-        <span class="hero-title__line">Skill Smart.</span>
-        <span class="hero-title__line hero-title__line--accent">Launch Strong.</span>
-      </h1>
-      <p class="hero-lede">An intensive, industry-aligned program to transform engineering graduates into industry-ready professionals with deep technical skills and real career opportunities.</p>
-
-      <div class="cta-row">
-        <a class="btn btn--primary" href="/corpx-edge/register.php">Register Now <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a class="btn btn--outline" href="#deliverables">Explore Deliverables</a>
-      </div>
-
-      <ul class="chips" aria-label="Programme highlights">
-        <li class="chip"><span class="chip__icon"><svg class="icon" aria-hidden="true"><use href="#i-case"/></svg></span>Placement-Enabled Learning</li>
-        <li class="chip"><span class="chip__icon"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg></span>Industry-Experienced Trainers</li>
-        <li class="chip"><span class="chip__icon"><svg class="icon" aria-hidden="true"><use href="#i-box"/></svg></span>Hands-on Practice</li>
-        <li class="chip"><span class="chip__icon"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></span>Access to Top Recruiters</li>
-      </ul>
-    </div>
-
-    <!-- Career journey diagram: built from HTML, SVG connectors and CSS -->
-    <div class="journey" role="img" aria-label="Career journey: Learn industry-aligned skills, Practice on real projects, Build career-ready skills, Get placed in top companies, all around iGenuine CareerEdge">
-      <svg class="journey__rings" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <circle cx="50" cy="50" r="44" class="ring ring--dotted"/>
-        <circle cx="50" cy="50" r="30" class="ring"/>
-        <path class="spoke" d="M50 50 L21 19 M50 50 L79 19 M50 50 L21 81 M50 50 L79 81"/>
-      </svg>
-      <span class="node node--tl"></span><span class="node node--tr"></span>
-      <span class="node node--bl"></span><span class="node node--br"></span>
-
-      <div class="journey__core">
-        <span class="journey__core-brand">iGenuine</span>
-        <span class="journey__core-name">CareerEdge</span>
-      </div>
-
-      <div class="journey__card journey__card--tl">
-        <span class="journey__icon"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></span>
-        <strong>Learn</strong><span>Industry-Aligned Skills</span>
-      </div>
-      <div class="journey__card journey__card--tr">
-        <span class="journey__icon journey__icon--orange"><svg class="icon" aria-hidden="true"><use href="#i-box"/></svg></span>
-        <strong>Practice</strong><span>on Real Projects</span>
-      </div>
-      <div class="journey__card journey__card--bl">
-        <span class="journey__icon"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg></span>
-        <strong>Build</strong><span>Career-Ready Skills</span>
-      </div>
-      <div class="journey__card journey__card--br">
-        <span class="journey__icon journey__icon--orange"><svg class="icon" aria-hidden="true"><use href="#i-case"/></svg></span>
-        <strong>Get Placed</strong><span>in Top Companies</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ABOUT ============ -->
-<section class="section" id="about" aria-labelledby="about-title">
-  <div class="container about3">
-    <div class="about3__visual" aria-hidden="true">
-      <span class="about3__rail"></span>
-      <p class="about3__kicker">Skills<br>Experience<br>Opportunities</p>
-      <p class="about3__word">Learn.<br>Build.<br><span>Grow.</span></p>
-      <p class="about3__foot">From learning<br>to a brighter<br>tomorrow</p>
-      <div class="about3__chip"><span class="about3__dot"></span><span>Industry-ready<br>skills</span></div>
-    </div>
-    <div class="about3__copy">
-      <p class="about3__pill">About CareerEdge</p>
-      <h2 id="about-title" class="about3__title">Your next chapter starts with the <span>right skills.</span></h2>
-      <p class="about3__lead">iGenuine CareerEdge helps engineering graduates build industry-ready skills through focused technical learning, practical experience and structured career opportunities.</p>
-      <p class="about3__body"><strong>Built for real career growth.</strong> We combine expert mentorship, hands-on projects and career preparation to help learners move confidently from education to employment.</p>
-      <ul class="about3__cards">
-        <li><span>01</span>Deep skilling</li>
-        <li><span>02</span>Industry exposure</li>
-        <li><span>03</span>Career support</li>
-      </ul>
-      <div class="about3__cta">
-        <a class="btn btn--primary" href="#apply" data-placeholder="Application form">Explore CareerEdge <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <div class="about3__brand"><strong>iGenuine Learning</strong><span>CareerEdge</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ DOMAINS ============ -->
-<section class="section section--tint" id="domains" aria-labelledby="domains-title">
-  <div class="container">
-    <header class="section-head">
-      <p class="eyebrow">Domains</p>
-      <h2 id="domains-title" class="section-title">Deep Skilling in High-Demand Technology Domains</h2>
-      <p class="section-sub">CareerEdge offers industry-aligned, intensive training in four strategically selected technology domains.</p>
-    </header>
-
-    <div class="grid grid--4">
-      <article class="domain-card">
-        <div class="domain-card__top">
-          <span class="domain-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></span>
-          <span class="badge">01</span>
+  <!-- ============ HERO SECTION ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div class="hero-left">
+        <div class="hero-badge-row">
+          <span class="badge badge--orange">
+            <span class="pulse"></span> 2024–2026 Cohorts • Admissions Open
+          </span>
         </div>
-        <h3>Java Programming, DSA</h3>
-        <p>Building strong programming foundations, computational thinking, problem-solving capabilities, and software development competencies.</p>
-        <span class="domain-card__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
-      </article>
-      <article class="domain-card">
-        <div class="domain-card__top">
-          <span class="domain-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-chip"/></svg></span>
-          <span class="badge">02</span>
+
+        <h1 id="hero-title" class="hero-title">
+          Learn Deep.<br>
+          Skill Smart.<br>
+          <span class="highlight-line">Launch Strong.</span>
+        </h1>
+
+        <p class="hero-lede">
+          An intensive, industry-aligned programme thoughtfully designed to transform engineering graduates into industry-ready professionals through domain-specific deep skilling and facilitated recruitment opportunities.
+        </p>
+
+        <div class="hero-cta-cluster">
+          <a class="btn btn-primary btn-lg" href="/corpx-edge/register.php">
+            Enroll for Cohort <svg class="icon"><use href="#icon-arrow"/></svg>
+          </a>
+          <a class="btn btn-secondary btn-lg" href="#about">
+            Explore 4 Domains
+          </a>
         </div>
-        <h3>VLSI Design &amp; Semiconductor Technologies</h3>
-        <p>Developing specialised competencies in digital design, verification, hardware-software integration, and semiconductor engineering.</p>
-        <span class="domain-card__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
-      </article>
-      <article class="domain-card">
-        <div class="domain-card__top">
-          <span class="domain-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-gear"/></svg></span>
-          <span class="badge">03</span>
-        </div>
-        <h3>Embedded Systems</h3>
-        <p>Building practical expertise in embedded programming, microcontrollers, hardware-software integration, and real-time systems.</p>
-        <span class="domain-card__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
-      </article>
-      <article class="domain-card">
-        <div class="domain-card__top">
-          <span class="domain-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-signal"/></svg></span>
-          <span class="badge">04</span>
-        </div>
-        <h3>Internet of Things (IoT)</h3>
-        <p>Enabling graduates to design and develop intelligent, connected systems through sensors, communication technologies, and practical applications.</p>
-        <span class="domain-card__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
-      </article>
-    </div>
-  </div>
-</section>
 
-<!-- ============ HIGHLIGHTS ============ -->
-<section class="section" id="highlights" aria-labelledby="highlights-title">
-  <div class="container">
-    <header class="section-head section-head--row">
-      <p class="eyebrow">Highlights</p>
-      <h2 id="highlights-title" class="section-title">Program Highlights</h2>
-      <p class="section-sub section-sub--end">A comprehensive program designed for real career outcomes.</p>
-    </header>
-
-    <ol class="grid grid--3 highlights">
-      <li class="highlight-card">
-        <span class="badge">01</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></span>
-        <div><h3>Placement-Enabled Learning</h3><p>Career-focused training integrated with structured recruitment opportunities.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">02</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg></span>
-        <div><h3>Industry-Aligned Deep Skilling</h3><p>Intensive domain-specific training designed around evolving industry requirements.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">03</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></span>
-        <div><h3>Corporate Readiness &amp; Employability</h3><p>Building technical, professional, and workplace competencies for successful career transitions.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">04</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
-        <div><h3>Access to Premium Recruiters</h3><p>Facilitated interview opportunities with leading technology and engineering companies.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">05</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
-        <div><h3>100% Placement-Linked Fee Refund</h3><p>Full programme fee refund if placement is not secured.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">06</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-trend"/></svg></span>
-        <div><h3>Continuous Competency Assessment</h3><p>Regular evaluations, personalised feedback, and performance tracking throughout the programme.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">07</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg></span>
-        <div><h3>Practice-Intensive Learning</h3><p>Hands-on exercises, real-world applications, and industry-relevant problem-solving.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">08</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg></span>
-        <div><h3>100% Instructor-Led Classroom Training</h3><p>Immersive, face-to-face learning with direct guidance from experienced trainers.</p></div>
-      </li>
-      <li class="highlight-card">
-        <span class="badge">09</span>
-        <span class="highlight-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
-        <div><h3>Small Batches. Individual Attention.</h3><p>Limited batch sizes to ensure personalised mentoring, focused learning, and individual progress monitoring.</p></div>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ============ DELIVERABLES ============ -->
-<section class="section section--tint deliverables-section" id="deliverables" aria-labelledby="deliverables-title">
-  <div class="container">
-    <header class="section-head section-head--row">
-      <div>
-        <p class="eyebrow">Deliverables</p>
-        <h2 id="deliverables-title" class="section-title">Practical Learning &amp; Career Outcomes</h2>
-      </div>
-      <p class="section-sub section-sub--end">Comprehensive capabilities designed around real industry demands and employer expectations.</p>
-    </header>
-
-    <div class="deliverables-grid">
-      <article class="deliv-card">
-        <div class="deliv-card__header">
-          <span class="deliv-card__tag">/Domain Skilling</span>
-          <span class="deliv-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></span>
-        </div>
-        <h3 class="deliv-card__title">Domain-Specific Deep Skilling</h3>
-        <p class="deliv-card__desc">Intensive, industry-aligned training in your chosen high-demand technology domain: Java &amp; DSA, VLSI Design, Embedded Systems, or Internet of Things (IoT).</p>
-        <ul class="deliv-card__list">
-          <li>Core architectural concepts &amp; production coding standards</li>
-          <li>Algorithmic problem-solving &amp; computational thinking</li>
-        </ul>
-      </article>
-
-      <article class="deliv-card">
-        <div class="deliv-card__header">
-          <span class="deliv-card__tag">/Applied Practice</span>
-          <span class="deliv-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-box"/></svg></span>
-        </div>
-        <h3 class="deliv-card__title">Hands-On Practice &amp; Real-World Engineering</h3>
-        <p class="deliv-card__desc">Extensive hands-on exercises and real-world engineering problem solving under the direct guidance of industry-experienced Subject Matter Experts (SMEs).</p>
-        <ul class="deliv-card__list">
-          <li>Practical application development &amp; hardware-software integration</li>
-          <li>Industry standard tools, workflows &amp; debugging methodologies</li>
-        </ul>
-      </article>
-
-      <article class="deliv-card">
-        <div class="deliv-card__header">
-          <span class="deliv-card__tag">/Assessments</span>
-          <span class="deliv-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-trend"/></svg></span>
-        </div>
-        <h3 class="deliv-card__title">Continuous Competency Assessments</h3>
-        <p class="deliv-card__desc">Regular diagnostic evaluations, milestone coding benchmarks, and personalized actionable feedback tracking technical growth throughout the programme.</p>
-        <ul class="deliv-card__list">
-          <li>Continuous progress monitoring &amp; competency scorecards</li>
-          <li>Individualized mentoring to bridge specific skill gaps</li>
-        </ul>
-      </article>
-
-      <article class="deliv-card">
-        <div class="deliv-card__header">
-          <span class="deliv-card__tag">/Interview Prep</span>
-          <span class="deliv-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></span>
-        </div>
-        <h3 class="deliv-card__title">Structured Technical Interview Preparation</h3>
-        <p class="deliv-card__desc">Systematic preparation designed to instill the technical depth, clarity, and analytical confidence required during high-stakes hiring rounds.</p>
-        <ul class="deliv-card__list">
-          <li>Rigorous technical question banks &amp; live whiteboard coding</li>
-          <li>Domain-specific mock interviews with veteran industry interviewers</li>
-        </ul>
-      </article>
-
-      <article class="deliv-card">
-        <div class="deliv-card__header">
-          <span class="deliv-card__tag">/Corporate Readiness</span>
-          <span class="deliv-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></span>
-        </div>
-        <h3 class="deliv-card__title">Corporate Readiness &amp; Workplace Competencies</h3>
-        <p class="deliv-card__desc">Building professional communication, teamwork, and workplace maturity to facilitate seamless transitions from campus to modern corporate environments.</p>
-        <ul class="deliv-card__list">
-          <li>Professional email etiquette &amp; technical presentation skills</li>
-          <li>Agile collaboration practices, ownership &amp; problem breakdown</li>
-        </ul>
-      </article>
-
-      <article class="deliv-card deliv-card--featured">
-        <div class="deliv-card__header">
-          <span class="deliv-card__tag deliv-card__tag--orange">/Placement Enabling</span>
-          <span class="deliv-card__icon deliv-card__icon--orange"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
-        </div>
-        <h3 class="deliv-card__title">Facilitated Recruitment Opportunities</h3>
-        <p class="deliv-card__desc">Facilitated interview opportunities with premium technology enterprises, product firms, and engineering leaders, backed by our placement-linked refund commitment.</p>
-        <ul class="deliv-card__list">
-          <li>Direct access to recruitment drives across 70+ partner firms</li>
-          <li>100% full programme fee refund if placement is not secured</li>
-        </ul>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ELIGIBILITY + COMPANIES ============ -->
-<!-- ============ ELIGIBILITY ============ -->
-<section class="section elig" id="eligibility" aria-labelledby="eligibility-title">
-  <div class="container elig__inner">
-    <div class="elig__head">
-      <p class="eyebrow eyebrow--light">Eligibility Criteria</p>
-      <h2 id="eligibility-title" class="elig__title">Who Can Apply</h2>
-      <p class="elig__subtitle">Designed for engineering graduates and early career professionals aiming for top engineering roles.</p>
-    </div>
-    
-    <div class="elig__grid">
-      <ol class="elig__list">
-        <li class="elig__item">
-          <span class="elig__num">01</span>
-          <span class="elig__icon"><svg class="icon" aria-hidden="true"><use href="#i-grad"/></svg></span>
-          <div>
-            <strong>Engineering Degree</strong>
-            <p>Must be an engineering graduate, preferably 2026, 2025 &amp; 2024 batches from CSE, ECE, EEE, and allied disciplines.</p>
+        <div class="hero-stats-band">
+          <div class="hero-stat">
+            <strong>70+</strong>
+            <span>Hiring Enterprises</span>
           </div>
-        </li>
-        <li class="elig__item">
-          <span class="elig__num">02</span>
-          <span class="elig__icon"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span>
-          <div>
-            <strong>Academic Performance</strong>
-            <p>Minimum CGPA of 6.0 with no standing arrears at the time of cohort commencement.</p>
+          <div class="hero-stat">
+            <strong class="text-orange">100%</strong>
+            <span>Placement Refund*</span>
           </div>
-        </li>
-        <li class="elig__item">
-          <span class="elig__num">03</span>
-          <span class="elig__icon"><svg class="icon" aria-hidden="true"><use href="#i-percent"/></svg></span>
-          <div>
-            <strong>Academic Consistency</strong>
-            <p>Minimum 60% aggregate in 10th, 12th, and Diploma (if applicable).</p>
+          <div class="hero-stat">
+            <strong>4</strong>
+            <span>Strategic Domains</span>
           </div>
-        </li>
-      </ol>
-
-      <div class="elig__checker-card">
-        <div class="checker-card__header">
-          <span class="checker-card__pill">Instant Check</span>
-          <h3>Check Your Eligibility</h3>
-          <p>Verify if your academic profile qualifies for CareerEdge in seconds.</p>
+          <div class="hero-stat">
+            <strong>1:15</strong>
+            <span>Mentor Batch Ratio</span>
+          </div>
         </div>
-        <form class="checker-form" id="eligibility-form" novalidate>
-          <div class="checker-form__field">
-            <label for="check-grad-year">Graduation Year</label>
-            <select id="check-grad-year" required>
-              <option value="2026" selected>2026 (Graduating / Final Year)</option>
-              <option value="2025">2025 (Graduate)</option>
-              <option value="2024">2024 (Graduate)</option>
-              <option value="other">2023 or earlier</option>
-            </select>
+      </div>
+
+      <!-- Hero Interactive Transformation Card -->
+      <div class="hero-interactive-card" role="region" aria-label="Career Trajectory Simulator">
+        <div class="card-header-bar">
+          <h3><svg class="icon" style="color:var(--orange-500);"><use href="#icon-sparkle"/></svg> Career Trajectory</h3>
+          <div class="toggle-tab-group" role="tablist">
+            <button type="button" class="toggle-tab-btn" data-trajectory="academic">Academic</button>
+            <button type="button" class="toggle-tab-btn is-active" data-trajectory="careeredge">CareerEdge</button>
           </div>
-          <div class="checker-form__row">
-            <div class="checker-form__field">
-              <label for="check-cgpa">CGPA (out of 10)</label>
-              <input type="number" id="check-cgpa" min="0" max="10" step="0.1" value="7.0" placeholder="e.g. 6.5" required>
+        </div>
+
+        <div class="trajectory-preview" id="trajectory-content">
+          <h4>CareerEdge Industry-Ready Engineer</h4>
+          <p>Specialized deep-skilling in high-demand domains (Java/DSA, VLSI, Embedded, IoT), production-standard capstone builds, diagnostic scorecards, and facilitated hiring across 70+ enterprises.</p>
+          <div class="trajectory-tags">
+            <span>Deep Domain Mastery</span>
+            <span>Production Lab Rigor</span>
+            <span>SME 1-on-1 Feedback</span>
+            <span>100% Placement-Linked Refund</span>
+          </div>
+        </div>
+
+        <div class="hero-interactive-foot">
+          <span><svg class="icon" style="width:16px;height:16px;vertical-align:middle;color:var(--orange-500);"><use href="#icon-shield"/></svg> 100% Placement-Linked Fee Refund</span>
+          <a href="#eligibility" class="btn btn-ghost btn-sm">Check Eligibility →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT SECTION ============ -->
+  <section class="section bg-subtle" id="about" aria-labelledby="about-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="badge">About CareerEdge</span>
+        <h2 id="about-title" class="section-title">Built on the Philosophy of Excellence</h2>
+        <p class="section-subtitle">Bridging the critical gap between academic learning and evolving industry expectations, empowering aspiring engineers to build sustainable careers.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-copy">
+          <h3>Beyond Training. Towards a Promising Career.</h3>
+          <p>CareerEdge is another flagship initiative of <strong>iGenuine Learning</strong>, thoughtfully designed to transform engineering graduates into industry-ready professionals through intensive, domain-specific deep skilling and career-enabling opportunities.</p>
+          <p>What makes CareerEdge distinctive is its commitment to go beyond conventional certification. The initiative brings together industry-experienced Subject Matter Experts (SMEs), hands-on learning, real-world engineering applications, continuous competency assessments, and structured interview preparation to build the technical confidence employers expect.</p>
+        </div>
+
+        <div class="audience-box">
+          <h4><svg class="icon" style="color:var(--orange-500);"><use href="#icon-grad"/></svg> Exclusively Designed For</h4>
+          <ul class="audience-list">
+            <li>
+              <svg class="icon"><use href="#icon-check"/></svg>
+              <span><strong>Engineering Graduates:</strong> Recent graduates from <strong>2026, 2025, and 2024</strong> passing out batches.</span>
+            </li>
+            <li>
+              <svg class="icon"><use href="#icon-check"/></svg>
+              <span><strong>Early-Career Professionals:</strong> With up to <strong>2–3 years of experience</strong> looking to shift into high-growth engineering domains.</span>
+            </li>
+            <li>
+              <svg class="icon"><use href="#icon-check"/></svg>
+              <span><strong>Eligible Branches:</strong> Computer Science (CSE), Electronics &amp; Communication (ECE), Electrical &amp; Electronics (EEE), and allied disciplines.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4 Strategic Domains Interactive Deep-Dive -->
+      <div class="domains-container">
+        <div style="margin-bottom:20px;">
+          <span class="badge badge--orange">Domain Specialization</span>
+          <h3 style="font-size:22px; font-weight:800; color:var(--blue-900); margin-top:6px;">Deep Skilling in Four High-Demand Domains</h3>
+        </div>
+
+        <div class="domain-tab-row" role="tablist">
+          <button type="button" class="domain-btn is-active" data-domain="domain-1">
+            <span class="domain-step">Domain 01</span>
+            <span class="domain-name">Java Programming &amp; DSA</span>
+          </button>
+          <button type="button" class="domain-btn" data-domain="domain-2">
+            <span class="domain-step">Domain 02</span>
+            <span class="domain-name">VLSI Design &amp; Semiconductor</span>
+          </button>
+          <button type="button" class="domain-btn" data-domain="domain-3">
+            <span class="domain-step">Domain 03</span>
+            <span class="domain-name">Embedded Systems</span>
+          </button>
+          <button type="button" class="domain-btn" data-domain="domain-4">
+            <span class="domain-step">Domain 04</span>
+            <span class="domain-name">Internet of Things (IoT)</span>
+          </button>
+        </div>
+
+        <!-- Domain 01: Java & DSA -->
+        <div class="domain-panel is-active" id="domain-1">
+          <div class="domain-info">
+            <h4>Java Programming, Data Structures &amp; Algorithms</h4>
+            <p>Building strong programming foundations, computational thinking, problem-solving capabilities, and software development competencies required by top global tech enterprises.</p>
+            <span class="domain-subhead">Core Competencies:</span>
+            <div class="chips-list">
+              <span>Object-Oriented Design</span>
+              <span>Advanced Data Structures</span>
+              <span>Algorithmic Optimization</span>
+              <span>Memory Profiling</span>
+              <span>Multithreading &amp; Concurrency</span>
+              <span>Clean Code Principles</span>
             </div>
-            <div class="checker-form__field">
-              <label for="check-percent">10th / 12th / Diploma %</label>
-              <input type="number" id="check-percent" min="0" max="100" step="1" value="70" placeholder="e.g. 65" required>
+            <a class="btn btn-primary btn-sm" href="/corpx-edge/register.php?domain=java">Register for Java Track →</a>
+          </div>
+          <div class="domain-sidebar">
+            <h5>Targeted Career Roles</h5>
+            <div class="role-badge-list">
+              <div>Software Development Engineer (SDE-1)</div>
+              <div>Backend Java Developer</div>
+              <div>Application Software Engineer</div>
+            </div>
+            <span style="font-size:12.5px; color:var(--ink-muted);">Hiring partners include Google, Amazon, Microsoft, Walmart, and Swiggy.</span>
+          </div>
+        </div>
+
+        <!-- Domain 02: VLSI -->
+        <div class="domain-panel" id="domain-2">
+          <div class="domain-info">
+            <h4>VLSI Design &amp; Semiconductor Technologies</h4>
+            <p>Developing specialized competencies in digital design, verification, and semiconductor engineering aligned with India’s rapidly growing chip design industry.</p>
+            <span class="domain-subhead">Core Competencies:</span>
+            <div class="chips-list">
+              <span>Verilog / SystemVerilog</span>
+              <span>RTL Design &amp; Synthesis</span>
+              <span>Functional Verification (UVM)</span>
+              <span>Static Timing Analysis (STA)</span>
+              <span>CMOS Circuit Design</span>
+              <span>FPGA Prototyping</span>
+            </div>
+            <a class="btn btn-primary btn-sm" href="/corpx-edge/register.php?domain=vlsi">Register for VLSI Track →</a>
+          </div>
+          <div class="domain-sidebar">
+            <h5>Targeted Career Roles</h5>
+            <div class="role-badge-list">
+              <div>ASIC / FPGA Design Engineer</div>
+              <div>Digital Design Verification Engineer</div>
+              <div>Physical Design Trainee</div>
+            </div>
+            <span style="font-size:12.5px; color:var(--ink-muted);">Hiring partners include NVIDIA, Intel, AMD, and Qualcomm.</span>
+          </div>
+        </div>
+
+        <!-- Domain 03: Embedded Systems -->
+        <div class="domain-panel" id="domain-3">
+          <div class="domain-info">
+            <h4>Embedded Systems</h4>
+            <p>Building practical expertise in embedded C programming, microcontrollers, hardware–software integration, and real-time systems.</p>
+            <span class="domain-subhead">Core Competencies:</span>
+            <div class="chips-list">
+              <span>Embedded C &amp; Assembly</span>
+              <span>ARM Cortex Architectures</span>
+              <span>Device Driver Development</span>
+              <span>I2C, SPI, UART, CAN</span>
+              <span>Real-Time Operating Systems (RTOS)</span>
+              <span>Hardware Bring-up &amp; Testing</span>
+            </div>
+            <a class="btn btn-primary btn-sm" href="/corpx-edge/register.php?domain=embedded">Register for Embedded Track →</a>
+          </div>
+          <div class="domain-sidebar">
+            <h5>Targeted Career Roles</h5>
+            <div class="role-badge-list">
+              <div>Embedded Firmware Engineer</div>
+              <div>Automotive Systems Engineer</div>
+              <div>Hardware Integration Specialist</div>
+            </div>
+            <span style="font-size:12.5px; color:var(--ink-muted);">Hiring partners include Ather Energy, Cisco, and engineering R&amp;D firms.</span>
+          </div>
+        </div>
+
+        <!-- Domain 04: IoT -->
+        <div class="domain-panel" id="domain-4">
+          <div class="domain-info">
+            <h4>Internet of Things (IoT)</h4>
+            <p>Enabling graduates to design and develop intelligent, connected systems through sensors, communication technologies, and practical applications.</p>
+            <span class="domain-subhead">Core Competencies:</span>
+            <div class="chips-list">
+              <span>Sensors &amp; Actuator Interfacing</span>
+              <span>MQTT, CoAP &amp; REST Protocols</span>
+              <span>Edge Computing Architectures</span>
+              <span>Cloud IoT Gateways</span>
+              <span>Wireless Mesh Networking</span>
+              <span>Telemetry Data Pipelines</span>
+            </div>
+            <a class="btn btn-primary btn-sm" href="/corpx-edge/register.php?domain=iot">Register for IoT Track →</a>
+          </div>
+          <div class="domain-sidebar">
+            <h5>Targeted Career Roles</h5>
+            <div class="role-badge-list">
+              <div>IoT Solutions Developer</div>
+              <div>Connected Systems Engineer</div>
+              <div>Smart Automation Specialist</div>
+            </div>
+            <span style="font-size:12.5px; color:var(--ink-muted);">Hiring partners include DrinkPrime, Sysnet, and smart systems innovators.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HIGHLIGHTS SECTION ============ -->
+  <section class="section" id="highlights" aria-labelledby="highlights-title">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <span class="badge">Program Highlights</span>
+          <h2 id="highlights-title" class="section-title">Nine Signature Pillars</h2>
+        </div>
+        <p class="section-subtitle" style="max-width:480px;">A comprehensive framework designed for real engineering outcomes and guaranteed accountability.</p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- 01 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 01</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-briefcase"/></svg></span>
+          </div>
+          <h3>Placement-Enabled Learning</h3>
+          <p>Career-focused training integrated with structured recruitment opportunities across verified hiring enterprises.</p>
+        </div>
+
+        <!-- 02 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 02</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-code"/></svg></span>
+          </div>
+          <h3>Industry-Aligned Deep Skilling</h3>
+          <p>Intensive domain-specific training designed around evolving industry requirements and production standards.</p>
+        </div>
+
+        <!-- 03 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 03</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-layers"/></svg></span>
+          </div>
+          <h3>Corporate Readiness &amp; Employability</h3>
+          <p>Building technical, professional, communication, and workplace competencies for successful career transitions.</p>
+        </div>
+
+        <!-- 04 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 04</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-target"/></svg></span>
+          </div>
+          <h3>Access to Premium Recruiters</h3>
+          <p>Facilitated interview opportunities with leading technology and engineering companies.</p>
+        </div>
+
+        <!-- 05 Featured Guarantee -->
+        <div class="bento-box bento-box--guarantee">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 05</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-shield"/></svg></span>
+          </div>
+          <h3>100% Placement-Linked Fee Refund</h3>
+          <p>Full programme fee refund if placement is not secured. A transparent, outcome-linked commitment that demonstrates our confidence in our training quality.</p>
+        </div>
+
+        <!-- 06 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 06</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-award"/></svg></span>
+          </div>
+          <h3>Continuous Competency Assessment</h3>
+          <p>Regular evaluations, personalized feedback, and performance tracking throughout the programme.</p>
+        </div>
+
+        <!-- 07 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 07</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-chip"/></svg></span>
+          </div>
+          <h3>Practice-Intensive Learning</h3>
+          <p>Hands-on exercises, real-world applications, and industry-relevant problem-solving.</p>
+        </div>
+
+        <!-- 08 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 08</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-grad"/></svg></span>
+          </div>
+          <h3>100% Instructor-Led Classroom Training</h3>
+          <p>Immersive, face-to-face learning with direct guidance from experienced trainers and Subject Matter Experts.</p>
+        </div>
+
+        <!-- 09 -->
+        <div class="bento-box">
+          <div class="bento-head">
+            <span class="bento-idx">Highlight 09</span>
+            <span class="bento-icon"><svg class="icon"><use href="#icon-users"/></svg></span>
+          </div>
+          <h3>Small Batches. Individual Attention.</h3>
+          <p>Limited batch sizes to ensure personalised mentoring, focused learning, and individual progress monitoring.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DELIVERABLES SECTION ============ -->
+  <section class="section bg-subtle" id="deliverables" aria-labelledby="deliverables-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="badge badge--orange">Practical Deliverables</span>
+        <h2 id="deliverables-title" class="section-title">What Participants Gain</h2>
+        <p class="section-subtitle">Tangible competencies, engineering applications, and structured career preparation built to satisfy employer expectations.</p>
+      </div>
+
+      <div class="deliverables-grid">
+        <!-- Deliverable 01 -->
+        <div class="deliv-card">
+          <span class="deliv-tag">Deliverable 01</span>
+          <h3>Domain-Specific Deep Skilling</h3>
+          <p>Intensive training in your selected technology domain (Java/DSA, VLSI, Embedded Systems, or IoT) covering core architectural fundamentals and industry best practices.</p>
+          <ul class="deliv-points">
+            <li><svg class="icon"><use href="#icon-check"/></svg> Industry-standard development methodologies</li>
+            <li><svg class="icon"><use href="#icon-check"/></svg> Clean coding, refactoring &amp; performance tuning</li>
+          </ul>
+        </div>
+
+        <!-- Deliverable 02 -->
+        <div class="deliv-card">
+          <span class="deliv-tag">Deliverable 02</span>
+          <h3>Real-World Engineering Applications</h3>
+          <p>Extensive practical exercises and hands-on laboratory builds bridging theoretical concepts to real-world deployment under expert SME supervision.</p>
+          <ul class="deliv-points">
+            <li><svg class="icon"><use href="#icon-check"/></svg> Hardware-software integration &amp; testing</li>
+            <li><svg class="icon"><use href="#icon-check"/></svg> Production debugging &amp; instrumentation</li>
+          </ul>
+        </div>
+
+        <!-- Deliverable 03 -->
+        <div class="deliv-card">
+          <span class="deliv-tag">Deliverable 03</span>
+          <h3>Continuous Competency Assessments</h3>
+          <p>Regular milestone evaluations and performance tracking scorecards delivering actionable feedback to pinpoint and eliminate technical weaknesses.</p>
+          <ul class="deliv-points">
+            <li><svg class="icon"><use href="#icon-check"/></svg> Objective skill diagnostics &amp; benchmark metrics</li>
+            <li><svg class="icon"><use href="#icon-check"/></svg> 1-on-1 personalized mentoring sessions</li>
+          </ul>
+        </div>
+
+        <!-- Deliverable 04 -->
+        <div class="deliv-card">
+          <span class="deliv-tag">Deliverable 04</span>
+          <h3>Structured Technical Interview Preparation</h3>
+          <p>Rigorous whiteboard coding drills, algorithmic problem-solving practice, and domain-specific mock interviews to build technical confidence.</p>
+          <ul class="deliv-points">
+            <li><svg class="icon"><use href="#icon-check"/></svg> Company-specific interview question sets</li>
+            <li><svg class="icon"><use href="#icon-check"/></svg> Simulated panel interviews &amp; detailed reviews</li>
+          </ul>
+        </div>
+
+        <!-- Deliverable 05 -->
+        <div class="deliv-card">
+          <span class="deliv-tag">Deliverable 05</span>
+          <h3>Corporate Readiness &amp; Employability</h3>
+          <p>Developing professional communication, workplace etiquette, teamwork, and problem-solving maturity for seamless transition into high-performing teams.</p>
+          <ul class="deliv-points">
+            <li><svg class="icon"><use href="#icon-check"/></svg> Professional technical presentations &amp; emails</li>
+            <li><svg class="icon"><use href="#icon-check"/></svg> Agile project management &amp; team ownership</li>
+          </ul>
+        </div>
+
+        <!-- Deliverable 06 -->
+        <div class="deliv-card">
+          <span class="deliv-tag">Deliverable 06</span>
+          <h3>Facilitated Interview Opportunities</h3>
+          <p>Direct access to recruitment opportunities with leading employers, supported by our verified 100% placement-linked fee refund commitment.</p>
+          <ul class="deliv-points">
+            <li><svg class="icon"><use href="#icon-check"/></svg> Facilitated interviews across 70+ partner firms</li>
+            <li><svg class="icon"><use href="#icon-check"/></svg> 100% Full Fee Refund if placement is not secured</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ELIGIBILITY SECTION & INTERACTIVE CHECKER ============ -->
+  <section class="section" id="eligibility" aria-labelledby="eligibility-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="badge">Eligibility</span>
+        <h2 id="eligibility-title" class="section-title">Who Can Apply</h2>
+        <p class="section-subtitle">Requirements are transparent and structured to ensure students are prepared for intensive deep skilling.</p>
+      </div>
+
+      <div class="eligibility-layout">
+        <!-- Left: 3 Criteria Cards aligned with Profiler -->
+        <div class="elig-rule-cards">
+          <div class="elig-rule">
+            <span class="elig-rule__icon"><svg class="icon"><use href="#icon-grad"/></svg></span>
+            <div class="elig-rule__content">
+              <strong>1. Engineering Degree</strong>
+              <p>Must be an engineering graduate, preferably from the <strong>2026, 2025 &amp; 2024</strong> batches (CSE, ECE, EEE, and allied disciplines).</p>
             </div>
           </div>
-          <div class="checker-form__field">
-            <label for="check-arrears">Standing Arrears?</label>
-            <select id="check-arrears" required>
-              <option value="no" selected>No (0 standing arrears)</option>
-              <option value="yes">Yes (Have active backlogs)</option>
-            </select>
+
+          <div class="elig-rule">
+            <span class="elig-rule__icon"><svg class="icon"><use href="#icon-award"/></svg></span>
+            <div class="elig-rule__content">
+              <strong>2. Academic Performance</strong>
+              <p><strong>Minimum CGPA of 6.0</strong> with <strong>no standing arrears</strong> at cohort commencement.</p>
+            </div>
           </div>
-          <button type="submit" class="btn btn--primary btn--check">Check Eligibility</button>
-          <div class="checker-form__result" id="checker-result" role="status" aria-live="polite"></div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ COMPANIES ============ -->
-<section class="section co" id="companies" aria-labelledby="companies-title">
-  <div class="container">
-    <header class="co__head">
-      <div>
-        <p class="co__eyebrow">Participating companies</p>
-        <h2 id="companies-title" class="co__title">100+ companies.<span>One career ecosystem.</span></h2>
-      </div>
-      <p class="co__intro">Explore opportunities across technology, product, core engineering, healthcare, finance and more with 100+ companies from India and around the world.</p>
-    </header>
-
-    <div class="co__tabs" id="co-tabs" role="tablist" aria-label="Company boards"></div>
-    <div class="co__panels" id="co-panels"></div>
-
-    <div class="co__detail" id="co-detail" aria-live="polite" hidden></div>
-    <p class="co__note" id="co-note" role="status"></p>
-  </div>
-</section>
-
-<!-- ============ REGISTER ============ -->
-<section class="section section--register" id="register" aria-labelledby="register-title">
-  <div class="container register-card">
-    <div class="register-card__content">
-      <p class="eyebrow eyebrow--light">Enrollment Open</p>
-      <h2 id="register-title" class="register-card__title">Launch Your Career with <span>CareerEdge</span></h2>
-      <p class="register-card__lead">Limited batch sizes to ensure individual attention and deep mentoring. Secure your seat in the upcoming cohort today.</p>
-      
-      <div class="register-highlights">
-        <div class="reg-hl">
-          <span class="reg-hl__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
-          <div>
-            <strong>100% Placement-Linked Fee Refund</strong>
-            <span>Full programme fee refund if placement is not secured</span>
+          <div class="elig-rule">
+            <span class="elig-rule__icon"><svg class="icon"><use href="#icon-shield"/></svg></span>
+            <div class="elig-rule__content">
+              <strong>3. Foundation Consistency</strong>
+              <p><strong>Minimum 60%</strong> aggregate in 10th standard, 12th standard, or Diploma (if applicable).</p>
+            </div>
           </div>
         </div>
-        <div class="reg-hl">
-          <span class="reg-hl__icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
-          <div>
-            <strong>Small Batches &amp; SME Mentors</strong>
-            <span>Close personal tracking throughout the curriculum</span>
+
+        <!-- Right: Interactive Eligibility Profiler Tool -->
+        <div class="elig-profiler">
+          <div class="elig-profiler-head">
+            <span class="badge badge--orange">Instant Profiler</span>
+            <h4>Verify Your Eligibility</h4>
+            <p>Slide your scores to check profile qualification in real time.</p>
+          </div>
+
+          <form class="profiler-form" id="eligibility-profiler-form" novalidate>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="calc-grad-year">Graduation Year</label>
+                <select id="calc-grad-year">
+                  <option value="2026" selected>2026 (Final Year)</option>
+                  <option value="2025">2025 (Graduate)</option>
+                  <option value="2024">2024 (Graduate)</option>
+                  <option value="other">2023 or Earlier</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="calc-arrears">Standing Arrears?</label>
+                <select id="calc-arrears">
+                  <option value="no" selected>No (0 Backlogs)</option>
+                  <option value="yes">Yes (Have Arrears)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="slider-cgpa">B.Tech / B.E CGPA: <span id="val-cgpa">7.2</span></label>
+              <div class="range-slider-wrap">
+                <input type="range" id="slider-cgpa" min="4.0" max="10.0" step="0.1" value="7.2">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="slider-percent">10th / 12th / Diploma %: <span id="val-percent">75%</span></label>
+              <div class="range-slider-wrap">
+                <input type="range" id="slider-percent" min="40" max="100" step="1" value="75">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:8px;">
+              Verify Profile Eligibility →
+            </button>
+
+            <div class="eligibility-output" id="profiler-output" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARTICIPATING COMPANIES SECTION (SIGNATURE DIRECTORY) ============ -->
+  <section class="section bg-subtle" id="companies" aria-labelledby="companies-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="badge badge--orange">Signature Recruiter Network</span>
+        <h2 id="companies-title" class="section-title">120+ Participating Enterprises</h2>
+        <p class="section-subtitle">Access facilitated hiring drives across leading global technology leaders, enterprise SaaS unicorns, semiconductor giants, and top-tier core engineering conglomerates.</p>
+      </div>
+
+      <div class="companies-signature-wrap">
+        <!-- Master Sector Differentiation Switcher -->
+        <div class="sector-tabs-wrap">
+          <div class="sector-tabs" role="tablist" aria-label="Company Sector Tabs">
+            <button type="button" class="sector-tab-btn is-active" data-sector="all">
+              All Enterprises <span class="tab-count">123</span>
+            </button>
+            <button type="button" class="sector-tab-btn" data-sector="it">
+              IT &amp; Software Technology <span class="tab-count">70</span>
+            </button>
+            <button type="button" class="sector-tab-btn" data-sector="core">
+              Core &amp; Non-IT Engineering <span class="tab-count">53</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="companies-toolbar">
+          <div class="search-input-box">
+            <svg class="icon"><use href="#icon-search"/></svg>
+            <input type="text" id="company-search-field" placeholder="Search Google, Tata Motors, NVIDIA, Siemens, Bosch, Swiggy..." aria-label="Search companies">
+          </div>
+          <span class="companies-counter-badge" id="companies-counter">Showing 123 Hiring Partners</span>
+        </div>
+
+        <!-- Sub-Domain Filter Chips -->
+        <div class="category-chips-row" id="company-category-chips" role="tablist">
+          <button type="button" class="category-chip is-active" data-cat-group="all">All Sectors</button>
+          <button type="button" class="category-chip" data-cat-group="Tech Giants &amp; Cloud">Tech Giants &amp; Cloud</button>
+          <button type="button" class="category-chip" data-cat-group="Automotive &amp; EV">Automotive &amp; EV</button>
+          <button type="button" class="category-chip" data-cat-group="Semiconductors &amp; Systems">Semiconductors &amp; VLSI</button>
+          <button type="button" class="category-chip" data-cat-group="Heavy Eng &amp; Infrastructure">Heavy Eng &amp; Infrastructure</button>
+          <button type="button" class="category-chip" data-cat-group="Fintech &amp; Unicorns">Fintech &amp; Unicorns</button>
+          <button type="button" class="category-chip" data-cat-group="Consulting &amp; IT Leaders">Global IT Leaders</button>
+          <button type="button" class="category-chip" data-cat-group="SaaS &amp; Enterprise">Enterprise SaaS</button>
+        </div>
+
+        <!-- Dynamic Company Directory Grid (Displays All Companies Without Internal Scrolling) -->
+        <div class="directory-grid" id="companies-directory-grid"></div>
+
+        <!-- Selected Company Inspector Bar -->
+        <div class="company-inspector" id="company-inspector-box">
+          <div class="inspector-identity">
+            <div class="inspector-thumb" id="inspector-thumb">
+              <img src="assets/brand-logos/google.svg" alt="Google logo">
+            </div>
+            <div class="inspector-details">
+              <h4 id="inspector-heading">Google</h4>
+              <p id="inspector-sub">Sector: IT &amp; Technology • Tech Giants &amp; Cloud • Active Facilitated Hiring Partner</p>
+            </div>
+          </div>
+          <a href="/corpx-edge/register.php" class="btn btn-primary btn-sm">Register for Placement Drives →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGISTRATION SECTION ============ -->
+  <section class="section" id="register" aria-labelledby="register-title">
+    <div class="container">
+      <div class="register-banner">
+        <span class="badge badge--orange" style="background:rgba(255,122,22,0.2);color:var(--orange-400);border-color:rgba(255,122,22,0.35);">Admissions Open</span>
+        <h2 id="register-title">Launch Your Career with <span style="color:var(--orange-400);">CareerEdge</span></h2>
+        <p>
+          Cohort batch sizes are strictly capped to ensure 1-on-1 mentorship and continuous evaluation. Verify your academic criteria and secure your seat in the upcoming cohort.
+        </p>
+
+        <div class="admission-pipeline">
+          <div class="pipeline-step">
+            <span class="step-num">Step 01</span>
+            <h5>Online Registration</h5>
+            <span>Submit your contact and academic profile through our secure portal.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="step-num">Step 02</span>
+            <h5>Aptitude Diagnostic</h5>
+            <span>Brief diagnostic assessment on logic and foundational engineering skills.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="step-num">Step 03</span>
+            <h5>Cohort Allocation</h5>
+            <span>Seat confirmation in your chosen track with your dedicated SME mentor.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="step-num">Step 04</span>
+            <h5>Recruitment Drives</h5>
+            <span>Facilitated interview rounds with 70+ partner technology enterprises.</span>
+          </div>
+        </div>
+
+        <div class="register-actions-row">
+          <a class="btn btn-primary btn-lg" href="/corpx-edge/register.php">
+            Complete Online Registration <svg class="icon"><use href="#icon-arrow"/></svg>
+          </a>
+          <a class="btn btn-secondary btn-lg" href="/corpx-edge/admin-login.php" style="background:rgba(255,255,255,0.12); color:var(--white); border-color:rgba(255,255,255,0.25);">
+            Candidate Portal Login
+          </a>
+          <div class="guarantee-pill">
+            <svg class="icon" style="width:18px;height:18px;"><use href="#icon-shield"/></svg>
+            <span><strong>100% Placement-Linked Fee Refund</strong> guarantee.</span>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="register-actions">
-        <a class="btn btn--primary btn--lg" href="/corpx-edge/register.php">Complete Registration <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a class="btn btn--outline-light btn--lg" href="/corpx-edge/admin-login.php">Candidate Login</a>
+  <!-- ============ CONTACT SECTION ============ -->
+  <section class="contact-section" id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="badge">Direct Communication</span>
+        <h2 id="contact-title" class="section-title">Contact iGenuine Learning</h2>
+        <p class="section-subtitle">Questions regarding CareerEdge admissions, eligibility, domain tracks, or recruitment partnerships? Reach out to our advisors directly.</p>
+      </div>
+
+      <div class="contact-layout">
+        <!-- Left: Office & Helpline Directory -->
+        <div class="contact-info-block">
+          <p class="contact-lede">Our academic &amp; placement counselors typically respond within one business day. Feel free to call, email, or visit our corporate campus.</p>
+          
+          <div class="contact-cards-stack">
+            <!-- Office Card -->
+            <a class="contact-card-link" href="https://maps.google.com/?q=Balan+Nagar+Peelamedu+Coimbatore+641004" target="_blank" rel="noopener" aria-label="Open iGenuine Corporate Office location in Google Maps">
+              <div class="contact-card-link__icon">
+                <svg class="icon"><use href="#icon-map-pin"/></svg>
+              </div>
+              <div>
+                <strong>Corporate Office</strong>
+                <p>#3A, Balan Nagar, South Masakalipalayam Road, Peelamedu, Coimbatore 641004, Tamil Nadu, India</p>
+                <span style="font-size:12.5px; color:var(--orange-600); font-weight:700; display:inline-block; margin-top:4px;">View on Google Maps →</span>
+              </div>
+            </a>
+
+            <!-- Phone / Helpline Card -->
+            <a class="contact-card-link" href="tel:+917845001115" aria-label="Call Admissions Helpline +91 78450 01115">
+              <div class="contact-card-link__icon">
+                <svg class="icon"><use href="#icon-phone"/></svg>
+              </div>
+              <div>
+                <strong>Admissions &amp; Support Helpline</strong>
+                <p style="color:var(--blue-900); font-weight:700;">+91 78450 01115</p>
+              </div>
+            </a>
+
+            <!-- Email Card -->
+            <a class="contact-card-link" href="mailto:helpdesk@igenuinelearning.com" aria-label="Email helpdesk@igenuinelearning.com">
+              <div class="contact-card-link__icon">
+                <svg class="icon"><use href="#icon-mail"/></svg>
+              </div>
+              <div>
+                <strong>Official Email Desk</strong>
+                <p style="color:var(--blue-900); font-weight:700;">helpdesk@igenuinelearning.com</p>
+              </div>
+            </a>
+          </div>
+
+          <!-- Social Handles -->
+          <div>
+            <span style="font-size:13px; font-weight:700; color:var(--ink-secondary); text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:10px;">Connect on Social Channels</span>
+            <div class="contact-social-row">
+              <a class="social-btn" href="https://in.linkedin.com/company/igenuinelearning" target="_blank" rel="noopener" aria-label="iGenuine Learning LinkedIn">
+                <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.4 1.4 0 1 0-.01-2.8 1.4 1.4 0 0 0 .01 2.8m1.4 9.74v-8.37H5.06v8.37h2.8z"/></svg>
+              </a>
+              <a class="social-btn" href="https://www.facebook.com/iGenuine" target="_blank" rel="noopener" aria-label="iGenuine Learning Facebook">
+                <svg viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02z"/></svg>
+              </a>
+              <a class="social-btn" href="https://www.instagram.com/igenuine_learning/" target="_blank" rel="noopener" aria-label="iGenuine Learning Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Message Form -->
+        <div class="contact-form-card">
+          <h3>Send Us a Message</h3>
+          <p>Fill out the form below. An academic counselor will contact you via phone or email.</p>
+
+          <form id="contact-form" class="contact-form" novalidate>
+            <input type="hidden" name="form_type" value="contact">
+            <!-- Anti-spam honeypot -->
+            <div class="honeypot-field" aria-hidden="true">
+              <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <div class="contact-grid-row">
+              <div class="form-group">
+                <label for="c-name">Full Name *</label>
+                <input class="form-input" id="c-name" name="name" type="text" placeholder="Your full name" required autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="c-phone">Phone Number *</label>
+                <input class="form-input" id="c-phone" name="phone" type="tel" placeholder="Your phone number" required autocomplete="tel">
+              </div>
+            </div>
+
+            <div class="contact-grid-row">
+              <div class="form-group">
+                <label for="c-email">Email Address *</label>
+                <input class="form-input" id="c-email" name="email" type="email" placeholder="Your email address" required autocomplete="email">
+              </div>
+              <div class="form-group">
+                <label for="c-org">College / Organization <em>(optional)</em></label>
+                <input class="form-input" id="c-org" name="organization" type="text" placeholder="Institution / Company (optional)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="c-message">Your Message or Inquiry *</label>
+              <textarea class="form-textarea" id="c-message" name="message" rows="4" placeholder="How can we help you?" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" id="contact-submit-btn" style="width:100%; justify-content:center;">
+              Submit Message <svg class="icon"><use href="#icon-arrow"/></svg>
+            </button>
+
+            <div class="form-feedback" id="contact-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- ============ FAQ SECTION ============ -->
+  <section class="section bg-subtle" id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="badge">Admissions Clarifications</span>
+        <h2 id="faq-title" class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Key information about CareerEdge curriculum, classroom structure, and the 100% refund policy.</p>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-tile">
+          <div class="faq-header">
+            <span>How does the 100% Placement-Linked Fee Refund policy work?</span>
+            <span class="faq-icon-btn">+</span>
+          </div>
+          <div class="faq-answer">
+            CareerEdge commits entirely to your employment outcomes. If a student successfully completes the training, maintains full attendance, fulfills assignment criteria, and does not secure an industry placement, the full program fee is refunded with zero hassle.
+          </div>
+        </div>
+
+        <div class="faq-tile">
+          <div class="faq-header">
+            <span>What are the training methodologies and class formats?</span>
+            <span class="faq-icon-btn">+</span>
+          </div>
+          <div class="faq-answer">
+            Training is 100% instructor-led classroom learning. We emphasize hands-on live labs, real-world simulation environments, and constant code reviews directly under the guidance of experienced Subject Matter Experts.
+          </div>
+        </div>
+
+        <div class="faq-tile">
+          <div class="faq-header">
+            <span>Can 2023 or earlier graduates apply for the cohort?</span>
+            <span class="faq-icon-btn">+</span>
+          </div>
+          <div class="faq-answer">
+            Preference is given to the 2026, 2025, and 2024 graduating batches. However, early-career engineers with up to 2–3 years of experience are also admitted subject to profile review and technical assessment.
+          </div>
+        </div>
+
+        <div class="faq-tile">
+          <div class="faq-header">
+            <span>How are interview drives arranged with partner companies?</span>
+            <span class="faq-icon-btn">+</span>
+          </div>
+          <div class="faq-answer">
+            Our placement team coordinates exclusive, facilitated recruitment drives directly with talent acquisition teams across our 70+ partner enterprises, shortlisting candidates based on continuous competency assessments.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </main>
 
-<!-- ============ FOOTER ============ -->
+<!-- ============ SITE FOOTER ============ -->
 <footer class="site-footer">
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <a href="#top" aria-label="iGenuine Learning home"><img src="assets/logo.png" alt="iGenuine Learning" width="120" height="47"></a>
-      <p>Empowering students to learn, build and thrive in their careers.</p>
-      <ul class="socials">
-        <li><a href="#" aria-label="LinkedIn" data-placeholder="Social link"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg></a></li>
-        <li><a href="#" aria-label="X" data-placeholder="Social link"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></a></li>
-        <li><a href="#" aria-label="YouTube" data-placeholder="Social link"><svg class="icon" aria-hidden="true"><use href="#i-youtube"/></svg></a></li>
-        <li><a href="#" aria-label="Instagram" data-placeholder="Social link"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
-      </ul>
+  <div class="container">
+    <div class="footer-top-grid">
+      <div class="footer-brand-side">
+        <img src="assets/logo.png" alt="iGenuine Learning" width="138" height="40">
+        <p>A flagship deep-skilling initiative of iGenuine Learning. Transforming engineering graduates into industry-ready leaders across high-demand tech domains.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#about">About CareerEdge</a></li>
+          <li><a href="#highlights">Program Highlights</a></li>
+          <li><a href="#deliverables">Deliverables</a></li>
+          <li><a href="#eligibility">Eligibility Criteria</a></li>
+          <li><a href="#companies">Participating Companies</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Candidate Links</h4>
+        <ul>
+          <li><a href="/corpx-edge/register.php">Cohort Registration</a></li>
+          <li><a href="/corpx-edge/admin-login.php">Candidate Login</a></li>
+          <li><a href="#faq">Admissions FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Contact &amp; Support</h4>
+        <ul>
+          <li><a href="tel:+917845001115" style="color:var(--blue-200); font-size:14px;">Helpline: +91 78450 01115</a></li>
+          <li><a href="mailto:helpdesk@igenuinelearning.com" style="color:var(--blue-200); font-size:14px;">Email: helpdesk@igenuinelearning.com</a></li>
+          <li><a href="https://maps.google.com/?q=Balan+Nagar+Peelamedu+Coimbatore+641004" target="_blank" rel="noopener" style="color:var(--blue-200); font-size:14px;">Peelamedu, Coimbatore 641004</a></li>
+          <li><a href="#contact" style="color:var(--orange-400); font-size:14px; font-weight:700;">Send an Inquiry →</a></li>
+        </ul>
+      </div>
     </div>
 
-    <nav class="footer-col" aria-label="Quick links">
-      <h3>Quick Links</h3>
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#highlights">Highlights</a></li>
-        <li><a href="#deliverables">Deliverables</a></li>
-        <li><a href="#eligibility">Eligibility</a></li>
-        <li><a href="#companies">Participating Companies</a></li>
-        <li><a href="/corpx-edge/admin-login.php">Login</a></li>
-        <li><a href="/corpx-edge/register.php">Register</a></li>
-      </ul>
-    </nav>
-
-    <nav class="footer-col" aria-label="Company">
-      <h3>Company</h3>
-      <ul>
-        <li><a href="#" data-placeholder="Page">About Us</a></li>
-        <li><a href="#" data-placeholder="Page">Our Mission</a></li>
-        <li><a href="#" data-placeholder="Page">Our Partners</a></li>
-        <li><a href="#" data-placeholder="Page">Careers</a></li>
-        <li><a href="#" data-placeholder="Page">Contact Us</a></li>
-      </ul>
-    </nav>
-
-    <nav class="footer-col" aria-label="Resources">
-      <h3>Resources</h3>
-      <ul>
-        <li><a href="#" data-placeholder="Page">Blog</a></li>
-        <li><a href="#" data-placeholder="Page">Events</a></li>
-        <li><a href="#" data-placeholder="Page">Student Stories</a></li>
-        <li><a href="#faq" id="faq">FAQs</a></li>
-        <li><a href="#" data-placeholder="Page">Privacy Policy</a></li>
-      </ul>
-    </nav>
-
-    <form class="subscribe" novalidate data-subscribe>
-      <h3>Stay Updated</h3>
-      <p>Get the latest updates on programs, upcoming batches and opportunities.</p>
-      <div class="subscribe__row">
-        <label class="sr-only" for="subscribe-email">Email address</label>
-        <input id="subscribe-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Enter your email" aria-describedby="subscribe-msg" required>
-        <button class="btn btn--primary btn--icon" type="submit" aria-label="Subscribe"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-      </div>
-      <p class="form-msg" id="subscribe-msg" role="status" aria-live="polite"></p>
-    </form>
-  </div>
-
-  <div class="container footer-bottom">
-    <span>© 2026 iGenuine Learning. All rights reserved.</span>
-    <span>Built for a brighter tomorrow.</span>
+    <div class="footer-bottom-bar">
+      <span>© 2026 iGenuine Learning. All rights reserved.</span>
+      <span>Learn Deep. Skill Smart. Launch Strong.</span>
+    </div>
   </div>
 </footer>
 
-<p class="toast" role="status" aria-live="polite" data-toast hidden></p>
+<!-- Floating Back to Top Button -->
+<button type="button" class="back-to-top" id="back-to-top-btn" aria-label="Back to top">
+  <svg class="icon" style="width:20px;height:20px;transform:rotate(-90deg);"><use href="#icon-arrow"/></svg>
+</button>
 
 </body>
 </html>

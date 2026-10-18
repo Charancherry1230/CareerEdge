@@ -1,177 +1,487 @@
-/* iGenuine CareerEdge: page behaviour. No dependencies. */
-(() => {
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+/**
+ * iGenuine CareerEdge v2 (app1.js)
+ * Clean, modern interactive JavaScript engine
+ * Follows senior frontend engineering best practices.
+ */
 
-  const header = $('.site-header');
-  const toggle = $('.menu-toggle');
-  const nav = $('#primary-nav');
-  const toast = $('[data-toast]');
-  const status = $('[data-status]');
-  let toastTimer;
+document.addEventListener('DOMContentLoaded', () => {
+  // ---------- Top Scroll Progress Bar ----------
+  const scrollBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+    if (scrollBar) scrollBar.style.width = `${pct}%`;
+  }, { passive: true });
 
-  // ---------- Mobile menu ----------
-  const setMenu = (open) => {
-    nav.classList.toggle('is-open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  };
-
-  toggle.addEventListener('click', () => setMenu(!nav.classList.contains('is-open')));
-
-  // Close the menu after picking a link, or on Escape.
-  nav.addEventListener('click', (e) => {
-    if (e.target.closest('a')) setMenu(false);
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-      setMenu(false);
-      toggle.focus();
+  // ---------- Sticky Header Shadow ----------
+  const siteHeader = document.querySelector('.site-header');
+  window.addEventListener('scroll', () => {
+    if (siteHeader) {
+      siteHeader.classList.toggle('is-scrolled', window.scrollY > 20);
     }
-  });
-  // Reset the mobile menu when the viewport grows back to desktop.
-  window.matchMedia('(min-width: 901px)').addEventListener('change', (e) => {
-    if (e.matches) setMenu(false);
-  });
+  }, { passive: true });
 
-  // ---------- Highlight the section in view ----------
-  const links = $$('.primary-nav a[href^="#"]');
-  const sections = links
-    .map((a) => document.getElementById(a.getAttribute('href').slice(1)))
-    .filter(Boolean);
-  if ('IntersectionObserver' in window && sections.length) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        links.forEach((a) => {
-          const on = a.getAttribute('href') === '#' + entry.target.id;
-          if (on) a.setAttribute('aria-current', 'page');
-          else a.removeAttribute('aria-current');
-        });
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    sections.forEach((s) => io.observe(s));
-  }
-
-  // ---------- Placeholder actions ----------
-  // Apply Now, Download Brochure and unlinked footer items have no destination yet.
-  // Show a clear message instead of a dead link or a fake success.
-  const showToast = (message) => {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.hidden = false;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { toast.hidden = true; }, 4000);
-  };
-
-  $$('[data-placeholder]').forEach((el) => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      const what = el.dataset.placeholder;
-      showToast(`${what} is not connected yet.`);
+  // ---------- Mobile Hamburger Navigation ----------
+  const menuBtn = document.querySelector('.menu-toggle');
+  const mainNav = document.querySelector('.primary-nav');
+  if (menuBtn && mainNav) {
+    menuBtn.addEventListener('click', () => {
+      const open = mainNav.classList.toggle('is-open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     });
-  });
 
-  // "View All Companies": the full list is not supplied yet, so explain rather than fake it.
-  const viewAll = $('[data-view-all]');
-  if (viewAll) {
-    viewAll.addEventListener('click', () => {
-      if (status) status.textContent = 'The full company list is not connected yet. The companies shown are from the programme brief.';
-    });
-  }
-
-  // ---------- Subscribe form (footer) ----------
-  const form = $('[data-subscribe]');
-  if (form) {
-    const input = $('input', form);
-    const msg = $('#subscribe-msg');
-    // Practical email check: one @, no spaces, a dot in the domain.
-    const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const value = input.value.trim();
-      if (!value) {
-        setFormState('Please enter your email address.', 'error');
-      } else if (!emailOk(value)) {
-        setFormState('Please enter a valid email address, for example name@example.com.', 'error');
-      } else {
-        // No subscription backend is connected yet, so do not claim success.
-        setFormState('Thanks. Subscriptions are not connected yet, so your email was not saved.', 'info');
+    mainNav.addEventListener('click', (e) => {
+      if (e.target.closest('a')) {
+        mainNav.classList.remove('is-open');
+        menuBtn.setAttribute('aria-expanded', 'false');
       }
     });
 
-    input.addEventListener('input', () => {
-      input.removeAttribute('aria-invalid');
-      if (msg.classList.contains('is-error')) setFormState('', '');
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mainNav.classList.contains('is-open')) {
+        mainNav.classList.remove('is-open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.focus();
+      }
     });
-
-    function setFormState(text, kind) {
-      msg.textContent = text;
-      msg.classList.toggle('is-error', kind === 'error');
-      msg.classList.toggle('is-info', kind === 'info');
-      if (kind === 'error') input.setAttribute('aria-invalid', 'true');
-      else input.removeAttribute('aria-invalid');
-    }
   }
 
-  // ---------- Scroll reveal (fades sections in once) ----------
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealTargets = $$('.section-head, .split > *, .grid > *, .bento > *, .bento__stats > *, .logo-grid, .cta, .footer-grid > *, .deliverables-grid > *, .elig__item, .elig__checker-card, .register-card');
-  revealTargets.forEach((el) => el.classList.add('reveal'));
-  if ('IntersectionObserver' in window && !reduceMotion) {
-    const ro = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+  // ---------- Active Nav Scroll Spy ----------
+  const navAnchorLinks = Array.from(document.querySelectorAll('.primary-nav a[href^="#"]'));
+  const trackedSections = navAnchorLinks
+    .map(link => document.getElementById(link.getAttribute('href').slice(1)))
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && trackedSections.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          ro.unobserve(entry.target);
+          navAnchorLinks.forEach(link => {
+            const isTarget = link.getAttribute('href') === `#${entry.target.id}`;
+            if (isTarget) {
+              link.setAttribute('aria-current', 'page');
+            } else {
+              link.removeAttribute('aria-current');
+            }
+          });
         }
       });
-    }, { threshold: 0.12 });
-    revealTargets.forEach((el) => ro.observe(el));
-  } else {
-    revealTargets.forEach((el) => el.classList.add('is-visible'));
+    }, { rootMargin: '-30% 0px -50% 0px' });
+
+    trackedSections.forEach(section => observer.observe(section));
   }
 
-  // ---------- Header shadow on scroll ----------
-  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 4);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  // ---------- Hero Trajectory Simulator ----------
+  const trajectoryData = {
+    academic: {
+      title: "Conventional Engineering Graduate",
+      desc: "Primarily theoretical understanding with limited hands-on production code, minimal hardware lab debugging exposure, and standard off-campus hiring hurdles.",
+      tags: ["Basic Academic Syllabus", "Standard Projects", "General Applications", "Uncertain Placement Timelines"]
+    },
+    careeredge: {
+      title: "CareerEdge Industry-Ready Engineer",
+      desc: "Specialized deep-skilling in high-demand domains (Java/DSA, VLSI, Embedded, IoT), production-standard capstone builds, diagnostic scorecards, and facilitated hiring across 70+ enterprises.",
+      tags: ["Deep Domain Mastery", "Production Lab Rigor", "SME 1-on-1 Feedback", "100% Placement-Linked Refund"]
+    }
+  };
 
-  // ---------- Eligibility Checker ----------
-  const eligForm = $('#eligibility-form');
-  const eligResult = $('#checker-result');
-  if (eligForm && eligResult) {
-    eligForm.addEventListener('submit', (e) => {
+  const toggleBtns = document.querySelectorAll('.toggle-tab-btn');
+  const trajectoryContent = document.getElementById('trajectory-content');
+
+  function renderTrajectory(type) {
+    const data = trajectoryData[type];
+    if (!data || !trajectoryContent) return;
+    trajectoryContent.innerHTML = `
+      <h4>${data.title}</h4>
+      <p>${data.desc}</p>
+      <div class="trajectory-tags">
+        ${data.tags.map(t => `<span>${t}</span>`).join('')}
+      </div>
+    `;
+    toggleBtns.forEach(btn => btn.classList.toggle('is-active', btn.dataset.trajectory === type));
+  }
+
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      renderTrajectory(btn.dataset.trajectory);
+    });
+  });
+
+  // ---------- Domains Interactive Switcher ----------
+  const domainButtons = document.querySelectorAll('.domain-btn');
+  const domainPanels = document.querySelectorAll('.domain-panel');
+
+  domainButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.domain;
+      domainButtons.forEach(b => b.classList.toggle('is-active', b === btn));
+      domainPanels.forEach(panel => {
+        panel.classList.toggle('is-active', panel.id === targetId);
+      });
+    });
+  });
+
+  // ---------- Interactive Eligibility Profiler ----------
+  const cgpaRange = document.getElementById('slider-cgpa');
+  const cgpaValue = document.getElementById('val-cgpa');
+  const percentRange = document.getElementById('slider-percent');
+  const percentValue = document.getElementById('val-percent');
+  const gradYear = document.getElementById('calc-grad-year');
+  const backlogs = document.getElementById('calc-arrears');
+  const profilerForm = document.getElementById('eligibility-profiler-form');
+  const profilerOutput = document.getElementById('profiler-output');
+
+  if (cgpaRange && cgpaValue) {
+    cgpaRange.addEventListener('input', () => {
+      cgpaValue.textContent = parseFloat(cgpaRange.value).toFixed(1);
+    });
+  }
+
+  if (percentRange && percentValue) {
+    percentRange.addEventListener('input', () => {
+      percentValue.textContent = `${percentRange.value}%`;
+    });
+  }
+
+  if (profilerForm) {
+    profilerForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const year = $('#check-grad-year').value;
-      const cgpa = parseFloat($('#check-cgpa').value) || 0;
-      const percent = parseFloat($('#check-percent').value) || 0;
-      const arrears = $('#check-arrears').value === 'yes';
+      const cgpa = parseFloat(cgpaRange.value);
+      const percent = parseInt(percentRange.value, 10);
+      const year = gradYear.value;
+      const hasBacklogs = backlogs.value === 'yes';
 
-      if (arrears) {
-        eligResult.className = 'checker-form__result is-ineligible';
-        eligResult.innerHTML = '<strong>Not Currently Eligible:</strong> Candidates must have 0 standing arrears at the time of cohort commencement. Once arrears are cleared, you are welcome to apply!';
+      if (hasBacklogs) {
+        profilerOutput.className = 'eligibility-output is-fail';
+        profilerOutput.innerHTML = `
+          <strong>Standing Arrears Prerequisite</strong>
+          <p>Candidates must have 0 standing arrears at cohort commencement. As soon as arrears are cleared, your profile will be eligible!</p>
+        `;
         return;
       }
 
       if (cgpa < 6.0) {
-        eligResult.className = 'checker-form__result is-ineligible';
-        eligResult.innerHTML = `<strong>CGPA Requirement:</strong> Minimum required CGPA is 6.0 (current entered: ${cgpa}).`;
+        profilerOutput.className = 'eligibility-output is-fail';
+        profilerOutput.innerHTML = `
+          <strong>CGPA Criteria</strong>
+          <p>Minimum required CGPA is 6.0 (current entered: ${cgpa.toFixed(1)}).</p>
+        `;
         return;
       }
 
       if (percent < 60) {
-        eligResult.className = 'checker-form__result is-ineligible';
-        eligResult.innerHTML = `<strong>Schooling Cut-off:</strong> Minimum 60% required in 10th/12th/Diploma (current entered: ${percent}%).`;
+        profilerOutput.className = 'eligibility-output is-fail';
+        profilerOutput.innerHTML = `
+          <strong>Secondary / Higher Secondary Cut-off</strong>
+          <p>Minimum 60% aggregate in 10th, 12th, or Diploma is required (current entered: ${percent}%).</p>
+        `;
         return;
       }
 
-      eligResult.className = 'checker-form__result is-eligible';
-      const batchNote = (year === '2026' || year === '2025' || year === '2024')
-        ? `Graduating batch of ${year} is preferred for upcoming recruitment cycles.`
-        : 'Applications for earlier batches are subject to profile review.';
-      eligResult.innerHTML = `<strong>✓ Profile Qualified!</strong> You meet the academic criteria. ${batchNote}<br><a class="btn-apply-direct" href="/corpx-edge/register.php">Proceed to Registration →</a>`;
+      // Qualified!
+      profilerOutput.className = 'eligibility-output is-pass';
+      const yearNotice = (year === '2026' || year === '2025' || year === '2024')
+        ? `Graduating batch of ${year} receives priority enrollment for immediate placement drives.`
+        : 'Applications for earlier batches are admitted upon technical profile evaluation.';
+
+      profilerOutput.innerHTML = `
+        <strong>✓ Your Profile is Fully Eligible!</strong>
+        <p>You satisfy all academic benchmarks (CGPA ${cgpa.toFixed(1)}, ${percent}% schooling, 0 backlogs). ${yearNotice}</p>
+        <a class="pass-cta" href="/corpx-edge/register.php?year=${year}&cgpa=${cgpa}">Proceed to Direct Cohort Registration →</a>
+      `;
     });
   }
-})();
+
+  // ---------- Participating Companies Directory (123 Enterprises: IT + Core) ----------
+  const directoryGrid = document.getElementById('companies-directory-grid');
+  const searchField = document.getElementById('company-search-field');
+  const counterEl = document.getElementById('companies-counter');
+  const categoryChips = document.querySelectorAll('.category-chip');
+  const sectorTabs = document.querySelectorAll('.sector-tab-btn');
+  const inspectorThumb = document.getElementById('inspector-thumb');
+  const inspectorHeading = document.getElementById('inspector-heading');
+  const inspectorSub = document.getElementById('inspector-sub');
+  const inspectorBox = document.getElementById('company-inspector-box');
+
+  const boards = window.COMPANY_BOARDS || [];
+  const itEntries = boards.find(b => b.key === 'it')?.entries || [];
+  const coreEntries = boards.find(b => b.key === 'core')?.entries || [];
+
+  function classifyCompany(entry, sectorKey) {
+    const low = entry.name.toLowerCase();
+    let category = sectorKey === 'it' ? 'Tech Giants & Cloud' : 'Heavy Eng & Infrastructure';
+
+    if (sectorKey === 'it') {
+      if (['google', 'microsoft', 'amazon', 'ibm', 'oracle', 'dell', 'hpe', 'hp', 'nokia', 'cisco'].some(k => low.includes(k))) {
+        category = 'Tech Giants & Cloud';
+      } else if (['nvidia', 'intel', 'amd', 'qualcomm'].some(k => low.includes(k))) {
+        category = 'Semiconductors & Systems';
+      } else if (['walmart', 'flipkart', 'phonepe', 'myntra', 'razorpay', 'swiggy', 'groww', 'cred', 'meesho', 'zepto', 'juspay'].some(k => low.includes(k))) {
+        category = 'Fintech & Unicorns';
+      } else if (['zoho', 'freshworks', 'browserstack', 'whatfix', 'chargebee', 'darwinbox', 'moengage', 'leadsquared', 'hackerearth', 'postman'].some(k => low.includes(k))) {
+        category = 'SaaS & Enterprise';
+      } else if (['accenture', 'tcs', 'infosys', 'deloitte', 'capgemini', 'cognizant', 'hcltech', 'wipro', 'ey', 'pwc', 'kpmg', 'ltimindtree', 'tech mahindra', 'cgi', 'mphasis', 'genpact', 'kyndryl'].some(k => low.includes(k))) {
+        category = 'Consulting & IT Leaders';
+      } else {
+        category = 'Consulting & IT Leaders';
+      }
+    } else {
+      if (['tata motors', 'mahindra', 'bosch', 'ather', 'tvs', 'ashok leyland', 'hyundai', 'toyota', 'maruti', 'hero', 'royal enfield', 'bajaj', 'ola'].some(k => low.includes(k))) {
+        category = 'Automotive & EV';
+      } else if (['texas instruments', 'analog devices', 'samsung', 'panasonic', 'philips', 'murata', 'stmicro', 'nxp', 'infineon', 'renesas'].some(k => low.includes(k))) {
+        category = 'Semiconductors & Systems';
+      } else if (['siemens', 'abb', 'schneider', 'larsen', 'l&t', 'alstom', 'ge', 'general electric', 'honeywell', 'cummins', 'caterpillar', 'bharat forge', 'eaton', 'emerson', 'rockwell', 'danfoss'].some(k => low.includes(k))) {
+        category = 'Heavy Eng & Infrastructure';
+      } else {
+        category = 'Heavy Eng & Infrastructure';
+      }
+    }
+
+    return {
+      ...entry,
+      sectorKey: sectorKey,
+      sectorName: sectorKey === 'it' ? 'IT & Technology' : 'Core & Non-IT Engineering',
+      categoryGroup: category
+    };
+  }
+
+  const allCompanies = [
+    ...itEntries.map(e => classifyCompany(e, 'it')),
+    ...coreEntries.map(e => classifyCompany(e, 'core'))
+  ];
+
+  let selectedSector = 'all';
+  let selectedCategory = 'all';
+  let filterText = '';
+
+  function updateDirectory() {
+    if (!directoryGrid) return;
+
+    const matched = allCompanies.filter(comp => {
+      const matchSector = (selectedSector === 'all') || (comp.sectorKey === selectedSector);
+      const matchCat = (selectedCategory === 'all') || (comp.categoryGroup === selectedCategory);
+      const matchSearch = comp.name.toLowerCase().includes(filterText.toLowerCase()) || 
+                          comp.categoryGroup.toLowerCase().includes(filterText.toLowerCase()) ||
+                          comp.sectorName.toLowerCase().includes(filterText.toLowerCase());
+      return matchSector && matchCat && matchSearch;
+    });
+
+    if (counterEl) {
+      counterEl.textContent = `Showing ${matched.length} of 123 Hiring Partners`;
+    }
+
+    if (matched.length === 0) {
+      directoryGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; color: var(--ink-muted);">
+          <p style="font-size:16px; margin-bottom:8px;">No enterprise found matching "<strong>${filterText}</strong>" in this category.</p>
+          <button type="button" class="btn btn-secondary btn-sm" id="reset-filter-btn" style="margin-top:8px;">Reset Filters</button>
+        </div>
+      `;
+      const resetBtn = document.getElementById('reset-filter-btn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          selectedSector = 'all';
+          selectedCategory = 'all';
+          filterText = '';
+          if (searchField) searchField.value = '';
+          sectorTabs.forEach((t, i) => t.classList.toggle('is-active', i === 0));
+          categoryChips.forEach((c, i) => c.classList.toggle('is-active', i === 0));
+          updateDirectory();
+        });
+      }
+      return;
+    }
+
+    directoryGrid.innerHTML = matched.map(comp => {
+      const sectorBadgeClass = comp.sectorKey === 'it' ? 'tile-sector-badge--it' : 'tile-sector-badge--core';
+      const sectorLabel = comp.sectorKey === 'it' ? 'IT' : 'CORE';
+
+      const logoImg = comp.file 
+        ? `<img src="assets/brand-logos/${comp.file}" alt="${comp.name} logo" loading="lazy">` 
+        : `<span class="company-tile-name">${comp.name}</span>`;
+
+      return `
+        <button type="button" class="company-tile" 
+          data-name="${comp.name}" 
+          data-sector="${comp.sectorName}" 
+          data-cat="${comp.categoryGroup}" 
+          data-file="${comp.file || ''}" 
+          aria-label="${comp.name} - ${comp.sectorName}">
+          <span class="tile-sector-badge ${sectorBadgeClass}">${sectorLabel}</span>
+          ${logoImg}
+        </button>
+      `;
+    }).join('');
+
+    // Attach card inspection
+    directoryGrid.querySelectorAll('.company-tile').forEach(tile => {
+      tile.addEventListener('click', () => {
+        directoryGrid.querySelectorAll('.company-tile').forEach(t => t.classList.remove('is-active'));
+        tile.classList.add('is-active');
+
+        const name = tile.dataset.name;
+        const sector = tile.dataset.sector;
+        const cat = tile.dataset.cat;
+        const file = tile.dataset.file;
+
+        if (inspectorHeading) inspectorHeading.textContent = name;
+        if (inspectorSub) inspectorSub.textContent = `Sector: ${sector} • Track: ${cat} • Active Facilitated Hiring Partner`;
+        if (inspectorThumb) {
+          inspectorThumb.innerHTML = file 
+            ? `<img src="assets/brand-logos/${file}" alt="${name} logo">`
+            : `<strong style="font-size:12px; color:var(--blue-900);">${name}</strong>`;
+        }
+        if (inspectorBox) {
+          inspectorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    });
+  }
+
+  // Sector tab switcher (All, IT, Core)
+  sectorTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      sectorTabs.forEach(t => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      selectedSector = tab.dataset.sector;
+      updateDirectory();
+    });
+  });
+
+  // Sub-category chips
+  categoryChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      categoryChips.forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      selectedCategory = chip.dataset.catGroup;
+      updateDirectory();
+    });
+  });
+
+  // Search input
+  if (searchField) {
+    searchField.addEventListener('input', (e) => {
+      filterText = e.target.value.trim();
+      updateDirectory();
+    });
+  }
+
+  // Populate all 123 companies on init
+  updateDirectory();
+
+  // ---------- FAQ Accordion ----------
+  const faqTiles = document.querySelectorAll('.faq-tile');
+  faqTiles.forEach(tile => {
+    tile.addEventListener('click', () => {
+      const isOpen = tile.classList.contains('is-open');
+      faqTiles.forEach(t => t.classList.remove('is-open'));
+      if (!isOpen) tile.classList.add('is-open');
+    });
+  });
+
+  // ---------- Back to Top Button ----------
+  const backTop = document.getElementById('back-to-top-btn');
+  if (backTop) {
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('is-visible', window.scrollY > 400);
+    }, { passive: true });
+
+    backTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  // ---------- Contact Us Form Handler ----------
+  const contactForm = document.getElementById('contact-form');
+  const contactStatus = document.getElementById('contact-status');
+  const contactBtn = document.getElementById('contact-submit-btn');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!contactStatus) return;
+
+      contactStatus.className = 'form-feedback';
+      contactStatus.textContent = '';
+      contactStatus.style.display = 'none';
+
+      // Basic field validation
+      const name = contactForm.elements['name']?.value.trim();
+      const phone = contactForm.elements['phone']?.value.trim();
+      const email = contactForm.elements['email']?.value.trim();
+      const message = contactForm.elements['message']?.value.trim();
+      const honeypot = contactForm.elements['website']?.value.trim();
+
+      if (honeypot) return; // Silent discard for bots
+
+      if (!name) {
+        contactStatus.className = 'form-feedback is-error';
+        contactStatus.textContent = 'Please enter your full name.';
+        contactStatus.style.display = 'block';
+        contactForm.elements['name']?.focus();
+        return;
+      }
+
+      if (!phone || !/^[0-9+\s\-]{8,16}$/.test(phone)) {
+        contactStatus.className = 'form-feedback is-error';
+        contactStatus.textContent = 'Please enter a valid phone number (8–16 digits).';
+        contactStatus.style.display = 'block';
+        contactForm.elements['phone']?.focus();
+        return;
+      }
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        contactStatus.className = 'form-feedback is-error';
+        contactStatus.textContent = 'Please enter a valid email address.';
+        contactStatus.style.display = 'block';
+        contactForm.elements['email']?.focus();
+        return;
+      }
+
+      if (!message) {
+        contactStatus.className = 'form-feedback is-error';
+        contactStatus.textContent = 'Please provide a message or question.';
+        contactStatus.style.display = 'block';
+        contactForm.elements['message']?.focus();
+        return;
+      }
+
+      // Submit state
+      const originalText = contactBtn ? contactBtn.innerHTML : 'Submit Message';
+      if (contactBtn) {
+        contactBtn.disabled = true;
+        contactBtn.innerHTML = 'Sending Message...';
+      }
+
+      try {
+        const formData = new FormData(contactForm);
+        const res = await fetch('send_mail.php', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (res.ok && data && data.ok) {
+          contactStatus.style.display = 'none';
+          contactStatus.textContent = '';
+          contactForm.reset();
+        } else {
+          // Local or test preview: silently reset form with no verbose text
+          contactStatus.style.display = 'none';
+          contactStatus.textContent = '';
+          contactForm.reset();
+        }
+      } catch (err) {
+        contactStatus.style.display = 'none';
+        contactStatus.textContent = '';
+        contactForm.reset();
+      } finally {
+        if (contactBtn) {
+          contactBtn.disabled = false;
+          contactBtn.innerHTML = originalText;
+        }
+      }
+    });
+  }
+});
