@@ -197,8 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const directoryGrid = document.getElementById('companies-directory-grid');
   const searchField = document.getElementById('company-search-field');
   const counterEl = document.getElementById('companies-counter');
-  const categoryChips = document.querySelectorAll('.category-chip');
-  const sectorTabs = document.querySelectorAll('.sector-tab-btn');
+  const categoryChips = document.querySelectorAll('.cat-chip');
+  const sectorTabs = document.querySelectorAll('.sector-pill');
   const inspectorThumb = document.getElementById('inspector-thumb');
   const inspectorHeading = document.getElementById('inspector-heading');
   const inspectorSub = document.getElementById('inspector-sub');
@@ -333,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
             : `<strong style="font-size:12px; color:var(--blue-900);">${name}</strong>`;
         }
         if (inspectorBox) {
+          inspectorBox.classList.add('is-visible');
           inspectorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
       });
@@ -374,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const backTop = document.getElementById('back-to-top-btn');
   if (backTop) {
     window.addEventListener('scroll', () => {
-      backTop.classList.toggle('is-visible', window.scrollY > 400);
+      backTop.classList.toggle('visible', window.scrollY > 400);
     }, { passive: true });
 
     backTop.addEventListener('click', () => {
