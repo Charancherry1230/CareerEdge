@@ -193,43 +193,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ---------- Participating Companies Directory ----------
+  // ---------- Participating Companies Directory (123 Enterprises: IT + Core) ----------
   const directoryGrid = document.getElementById('companies-directory-grid');
   const searchField = document.getElementById('company-search-field');
+  const counterEl = document.getElementById('companies-counter');
   const categoryChips = document.querySelectorAll('.category-chip');
+  const sectorTabs = document.querySelectorAll('.sector-tab-btn');
   const inspectorThumb = document.getElementById('inspector-thumb');
   const inspectorHeading = document.getElementById('inspector-heading');
   const inspectorSub = document.getElementById('inspector-sub');
   const inspectorBox = document.getElementById('company-inspector-box');
 
   const boards = window.COMPANY_BOARDS || [];
-  const itCompanies = boards.find(b => b.key === 'it')?.entries || [];
+  const itEntries = boards.find(b => b.key === 'it')?.entries || [];
+  const coreEntries = boards.find(b => b.key === 'core')?.entries || [];
 
-  // Group companies into clean logical categories
-  const allCompanies = itCompanies.map(entry => {
-    let category = 'Tech Giants & Cloud';
+  function classifyCompany(entry, sectorKey) {
     const low = entry.name.toLowerCase();
+    let category = sectorKey === 'it' ? 'Tech Giants & Cloud' : 'Heavy Eng & Infrastructure';
 
-    if (['google', 'microsoft', 'amazon', 'ibm', 'oracle', 'dell', 'hpe', 'hp', 'nokia', 'cisco'].some(k => low.includes(k))) {
-      category = 'Tech Giants & Cloud';
-    } else if (['nvidia', 'intel', 'amd', 'qualcomm', 'ather'].some(k => low.includes(k))) {
-      category = 'Semiconductors & Systems';
-    } else if (['walmart', 'flipkart', 'phonepe', 'myntra', 'razorpay', 'swiggy', 'groww', 'cred', 'meesho', 'zepto', 'juspay'].some(k => low.includes(k))) {
-      category = 'Fintech & Unicorns';
-    } else if (['zoho', 'freshworks', 'browserstack', 'whatfix', 'chargebee', 'darwinbox', 'moengage', 'leadsquared', 'hackerearth'].some(k => low.includes(k))) {
-      category = 'SaaS & Enterprise';
-    } else if (['accenture', 'tcs', 'infosys', 'deloitte', 'capgemini', 'cognizant', 'hcltech', 'wipro', 'ey', 'pwc', 'kpmg', 'ltimindtree', 'tech mahindra', 'cgi', 'mphasis', 'genpact', 'kyndryl'].some(k => low.includes(k))) {
-      category = 'Consulting & IT Leaders';
+    if (sectorKey === 'it') {
+      if (['google', 'microsoft', 'amazon', 'ibm', 'oracle', 'dell', 'hpe', 'hp', 'nokia', 'cisco'].some(k => low.includes(k))) {
+        category = 'Tech Giants & Cloud';
+      } else if (['nvidia', 'intel', 'amd', 'qualcomm'].some(k => low.includes(k))) {
+        category = 'Semiconductors & Systems';
+      } else if (['walmart', 'flipkart', 'phonepe', 'myntra', 'razorpay', 'swiggy', 'groww', 'cred', 'meesho', 'zepto', 'juspay'].some(k => low.includes(k))) {
+        category = 'Fintech & Unicorns';
+      } else if (['zoho', 'freshworks', 'browserstack', 'whatfix', 'chargebee', 'darwinbox', 'moengage', 'leadsquared', 'hackerearth', 'postman'].some(k => low.includes(k))) {
+        category = 'SaaS & Enterprise';
+      } else if (['accenture', 'tcs', 'infosys', 'deloitte', 'capgemini', 'cognizant', 'hcltech', 'wipro', 'ey', 'pwc', 'kpmg', 'ltimindtree', 'tech mahindra', 'cgi', 'mphasis', 'genpact', 'kyndryl'].some(k => low.includes(k))) {
+        category = 'Consulting & IT Leaders';
+      } else {
+        category = 'Consulting & IT Leaders';
+      }
     } else {
-      category = 'High-Growth Tech';
+      if (['tata motors', 'mahindra', 'bosch', 'ather', 'tvs', 'ashok leyland', 'hyundai', 'toyota', 'maruti', 'hero', 'royal enfield', 'bajaj', 'ola'].some(k => low.includes(k))) {
+        category = 'Automotive & EV';
+      } else if (['texas instruments', 'analog devices', 'samsung', 'panasonic', 'philips', 'murata', 'stmicro', 'nxp', 'infineon', 'renesas'].some(k => low.includes(k))) {
+        category = 'Semiconductors & Systems';
+      } else if (['siemens', 'abb', 'schneider', 'larsen', 'l&t', 'alstom', 'ge', 'general electric', 'honeywell', 'cummins', 'caterpillar', 'bharat forge', 'eaton', 'emerson', 'rockwell', 'danfoss'].some(k => low.includes(k))) {
+        category = 'Heavy Eng & Infrastructure';
+      } else {
+        category = 'Heavy Eng & Infrastructure';
+      }
     }
 
     return {
       ...entry,
+      sectorKey: sectorKey,
+      sectorName: sectorKey === 'it' ? 'IT & Technology' : 'Core & Non-IT Engineering',
       categoryGroup: category
     };
-  });
+  }
 
+  const allCompanies = [
+    ...itEntries.map(e => classifyCompany(e, 'it')),
+    ...coreEntries.map(e => classifyCompany(e, 'core'))
+  ];
+
+  let selectedSector = 'all';
   let selectedCategory = 'all';
   let filterText = '';
 
@@ -237,28 +259,57 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!directoryGrid) return;
 
     const matched = allCompanies.filter(comp => {
-      const matchSearch = comp.name.toLowerCase().includes(filterText.toLowerCase());
+      const matchSector = (selectedSector === 'all') || (comp.sectorKey === selectedSector);
       const matchCat = (selectedCategory === 'all') || (comp.categoryGroup === selectedCategory);
-      return matchSearch && matchCat;
+      const matchSearch = comp.name.toLowerCase().includes(filterText.toLowerCase()) || 
+                          comp.categoryGroup.toLowerCase().includes(filterText.toLowerCase()) ||
+                          comp.sectorName.toLowerCase().includes(filterText.toLowerCase());
+      return matchSector && matchCat && matchSearch;
     });
+
+    if (counterEl) {
+      counterEl.textContent = `Showing ${matched.length} of 123 Hiring Partners`;
+    }
 
     if (matched.length === 0) {
       directoryGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--ink-muted);">
-          <p>No participating enterprise matches "<strong>${filterText}</strong>". Clear search to view all 70 companies.</p>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; color: var(--ink-muted);">
+          <p style="font-size:16px; margin-bottom:8px;">No enterprise found matching "<strong>${filterText}</strong>" in this category.</p>
+          <button type="button" class="btn btn-secondary btn-sm" id="reset-filter-btn" style="margin-top:8px;">Reset Filters</button>
         </div>
       `;
+      const resetBtn = document.getElementById('reset-filter-btn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          selectedSector = 'all';
+          selectedCategory = 'all';
+          filterText = '';
+          if (searchField) searchField.value = '';
+          sectorTabs.forEach((t, i) => t.classList.toggle('is-active', i === 0));
+          categoryChips.forEach((c, i) => c.classList.toggle('is-active', i === 0));
+          updateDirectory();
+        });
+      }
       return;
     }
 
     directoryGrid.innerHTML = matched.map(comp => {
-      const imageOrName = comp.file 
+      const sectorBadgeClass = comp.sectorKey === 'it' ? 'tile-sector-badge--it' : 'tile-sector-badge--core';
+      const sectorLabel = comp.sectorKey === 'it' ? 'IT' : 'CORE';
+
+      const logoImg = comp.file 
         ? `<img src="assets/brand-logos/${comp.file}" alt="${comp.name} logo" loading="lazy">` 
         : `<span class="company-tile-name">${comp.name}</span>`;
 
       return `
-        <button type="button" class="company-tile" data-name="${comp.name}" data-cat="${comp.categoryGroup}" data-file="${comp.file || ''}" aria-label="${comp.name}">
-          ${imageOrName}
+        <button type="button" class="company-tile" 
+          data-name="${comp.name}" 
+          data-sector="${comp.sectorName}" 
+          data-cat="${comp.categoryGroup}" 
+          data-file="${comp.file || ''}" 
+          aria-label="${comp.name} - ${comp.sectorName}">
+          <span class="tile-sector-badge ${sectorBadgeClass}">${sectorLabel}</span>
+          ${logoImg}
         </button>
       `;
     }).join('');
@@ -270,11 +321,12 @@ document.addEventListener('DOMContentLoaded', () => {
         tile.classList.add('is-active');
 
         const name = tile.dataset.name;
+        const sector = tile.dataset.sector;
         const cat = tile.dataset.cat;
         const file = tile.dataset.file;
 
         if (inspectorHeading) inspectorHeading.textContent = name;
-        if (inspectorSub) inspectorSub.textContent = `Industry Category: ${cat} • Active Facilitated Hiring Partner`;
+        if (inspectorSub) inspectorSub.textContent = `Sector: ${sector} • Track: ${cat} • Active Facilitated Hiring Partner`;
         if (inspectorThumb) {
           inspectorThumb.innerHTML = file 
             ? `<img src="assets/brand-logos/${file}" alt="${name} logo">`
@@ -287,13 +339,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (searchField) {
-    searchField.addEventListener('input', (e) => {
-      filterText = e.target.value.trim();
+  // Sector tab switcher (All, IT, Core)
+  sectorTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      sectorTabs.forEach(t => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      selectedSector = tab.dataset.sector;
       updateDirectory();
     });
-  }
+  });
 
+  // Sub-category chips
   categoryChips.forEach(chip => {
     chip.addEventListener('click', () => {
       categoryChips.forEach(c => c.classList.remove('is-active'));
@@ -303,7 +359,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Initial populate of 70 companies
+  // Search input
+  if (searchField) {
+    searchField.addEventListener('input', (e) => {
+      filterText = e.target.value.trim();
+      updateDirectory();
+    });
+  }
+
+  // Populate all 123 companies on init
   updateDirectory();
 
   // ---------- FAQ Accordion ----------
