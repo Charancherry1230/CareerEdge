@@ -79,7 +79,7 @@ button { cursor: pointer; }
 .header-inner { display: flex; align-items: center; gap: 18px; width: min(1200px, calc(100% - 48px)); height: 76px; margin: 0 auto; }
 /* the logo PNG has a transparent background, so it sits directly on the header */
 .brand-wrap { display: flex; align-items: center; text-decoration: none; flex: none; }
-.brand-wrap img { height: 42px; width: auto; }
+.brand-wrap img { height: 24px; width: auto; }
 [data-theme="dark"] .brand-wrap img { filter: brightness(0) invert(1); }
 .brand-tag { white-space: nowrap; }
 .brand-tag span { color: var(--accent); }
@@ -416,7 +416,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 @media (max-width: 640px) {
   .container { width: calc(100% - 32px); }
   .header-inner { width: calc(100% - 28px); height: 68px; gap: 10px; }
-  .brand-wrap img { height: 34px; }
+  .brand-wrap img { height: 20px; }
   .header-cta { height: 36px; padding: 0 12px; font-size: 12px; }
   .primary-nav.is-open { top: 68px; }
   .hero { padding-top: 36px; }
