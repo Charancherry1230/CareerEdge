@@ -429,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
         : `<span class="company-tile-name">${comp.name}</span>`;
 
       return `
-        <button type="button" class="company-tile"
+        <button type="button" class="company-tile${comp.mono ? ' is-mono' : ''}${comp.big ? ' is-big' : ''}"
           data-name="${comp.name}"
           data-sector="${comp.sectorName}"
           data-cat="${comp.categoryGroup}"

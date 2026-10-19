@@ -174,7 +174,7 @@ window.COMPANY_BOARDS = [
     "p": 4,
     "g": 1,
     "name": "Deloitte India",
-    "file": "deloitte-india.svg",
+    "file": "deloitte-india.png",
     "key": "deloitte-india",
     "light": false
    },
@@ -302,7 +302,8 @@ window.COMPANY_BOARDS = [
     "name": "Walmart Global Tech India",
     "file": "walmart-global-tech-india.svg",
     "key": "walmart-global-tech-india",
-    "light": false
+    "light": false,
+    "big": true
    },
    {
     "n": 34,
@@ -435,7 +436,7 @@ window.COMPANY_BOARDS = [
     "p": 5,
     "g": 12,
     "name": "BrowserStack",
-    "file": "browserstack.svg",
+    "file": "browserstack.png",
     "key": "browserstack",
     "light": false
    },
@@ -606,7 +607,7 @@ window.COMPANY_BOARDS = [
     "p": 7,
     "g": 15,
     "name": "DrinkPrime",
-    "file": "drinkprime.svg",
+    "file": "drinkprime.png",
     "key": "drinkprime",
     "light": false
    },
@@ -615,7 +616,7 @@ window.COMPANY_BOARDS = [
     "p": 7,
     "g": 16,
     "name": "Smart Food Safe India",
-    "file": null,
+    "file": "smart-food-safe-india.png",
     "key": "smart-food-safe-india",
     "light": false
    },
@@ -633,9 +634,54 @@ window.COMPANY_BOARDS = [
     "p": 7,
     "g": 18,
     "name": "Juspay",
-    "file": "juspay.svg",
+    "file": "juspay.png",
     "key": "juspay",
     "light": false
+   },
+   {
+    "n": 18,
+    "p": 3,
+    "g": 18,
+    "name": "Synopsys",
+    "file": "synopsys.png",
+    "key": "synopsys",
+    "light": true
+   },
+   {
+    "n": 19,
+    "p": 4,
+    "g": 1,
+    "name": "Cadence Design Systems",
+    "file": "cadence-design-systems.svg",
+    "key": "cadence-design-systems",
+    "light": false
+   },
+   {
+    "n": 29,
+    "p": 4,
+    "g": 11,
+    "name": "Uber",
+    "file": "uber.svg",
+    "key": "uber",
+    "light": false
+   },
+   {
+    "n": 32,
+    "p": 4,
+    "g": 14,
+    "name": "GlobalLogic (Hitachi Group)",
+    "file": "globallogic-hitachi.png",
+    "key": "globallogic-hitachi-group",
+    "light": false
+   },
+   {
+    "n": 34,
+    "p": 4,
+    "g": 16,
+    "name": "Ola",
+    "file": "ola.png",
+    "key": "ola",
+    "light": true
    }
   ]
  },
@@ -713,7 +759,8 @@ window.COMPANY_BOARDS = [
     "name": "Texas Instruments",
     "file": "texas-instruments.png",
     "key": "texas-instruments",
-    "light": false
+    "light": false,
+    "big": true
    },
    {
     "n": 9,
@@ -740,7 +787,8 @@ window.COMPANY_BOARDS = [
     "name": "Sony",
     "file": "sony.svg",
     "key": "sony",
-    "light": false
+    "light": false,
+    "big": true
    },
    {
     "n": 12,
@@ -797,24 +845,6 @@ window.COMPANY_BOARDS = [
     "light": false
    },
    {
-    "n": 18,
-    "p": 3,
-    "g": 18,
-    "name": "Synopsys",
-    "file": "synopsys.png",
-    "key": "synopsys",
-    "light": true
-   },
-   {
-    "n": 19,
-    "p": 4,
-    "g": 1,
-    "name": "Cadence Design Systems",
-    "file": "cadence-design-systems.svg",
-    "key": "cadence-design-systems",
-    "light": false
-   },
-   {
     "n": 20,
     "p": 4,
     "g": 2,
@@ -839,7 +869,8 @@ window.COMPANY_BOARDS = [
     "name": "Mahindra Group",
     "file": "mahindra-group.svg",
     "key": "mahindra-group",
-    "light": false
+    "light": false,
+    "big": true
    },
    {
     "n": 23,
@@ -896,15 +927,6 @@ window.COMPANY_BOARDS = [
     "light": false
    },
    {
-    "n": 29,
-    "p": 4,
-    "g": 11,
-    "name": "Uber",
-    "file": "uber.svg",
-    "key": "uber",
-    "light": false
-   },
-   {
     "n": 30,
     "p": 4,
     "g": 12,
@@ -923,15 +945,6 @@ window.COMPANY_BOARDS = [
     "light": false
    },
    {
-    "n": 32,
-    "p": 4,
-    "g": 14,
-    "name": "GlobalLogic (Hitachi Group)",
-    "file": "globallogic-hitachi.png",
-    "key": "globallogic-hitachi-group",
-    "light": false
-   },
-   {
     "n": 33,
     "p": 4,
     "g": 15,
@@ -939,15 +952,6 @@ window.COMPANY_BOARDS = [
     "file": "flipkart.png",
     "key": "flipkart",
     "light": false
-   },
-   {
-    "n": 34,
-    "p": 4,
-    "g": 16,
-    "name": "Ola",
-    "file": "ola.svg",
-    "key": "ola",
-    "light": true
    },
    {
     "n": 35,
@@ -963,7 +967,7 @@ window.COMPANY_BOARDS = [
     "p": 4,
     "g": 18,
     "name": "Tata Electronics",
-    "file": "tata-electronics.svg",
+    "file": "tata-electronics.png",
     "key": "tata-electronics",
     "light": false
    },
@@ -972,7 +976,7 @@ window.COMPANY_BOARDS = [
     "p": 5,
     "g": 1,
     "name": "Tata AutoComp Systems",
-    "file": null,
+    "file": "tata-autocomp-systems.png",
     "key": "tata-autocomp-systems",
     "light": false
    },
@@ -981,7 +985,7 @@ window.COMPANY_BOARDS = [
     "p": 5,
     "g": 2,
     "name": "Motherson Group",
-    "file": null,
+    "file": "motherson-group.png",
     "key": "motherson-group",
     "light": false
    },
@@ -1044,7 +1048,7 @@ window.COMPANY_BOARDS = [
     "p": 5,
     "g": 9,
     "name": "Kosei Minda",
-    "file": null,
+    "file": "kosei-minda.png",
     "key": "kosei-minda",
     "light": false
    },
@@ -1107,7 +1111,7 @@ window.COMPANY_BOARDS = [
     "p": 5,
     "g": 16,
     "name": "Anheuser-Busch InBev (AB InBev)",
-    "file": "anheuser-busch-inbev-ab-inbev.svg",
+    "file": "anheuser-busch-inbev-ab-inbev.png",
     "key": "anheuser-busch-inbev-ab-inbev",
     "light": true
    },

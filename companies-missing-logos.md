@@ -3,7 +3,7 @@
 Each company below keeps its tile on the board (no company is removed). Add a logo file to
 `assets/brand-logos/` using the listed key, and the tile will show it automatically.
 
-Counts: it 69/70 with logo · core 50/53 with logo
+Counts: it 74/75 with logo · core 45/48 with logo
 
 | Board | Period | Group | Company | Expected logo key |
 | --- | --- | --- | --- | --- |

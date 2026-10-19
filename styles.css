@@ -249,6 +249,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .company-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .company-tile.is-active { outline: 2px solid var(--accent); outline-offset: 2px; }
 .company-tile.is-mono img { filter: brightness(0); }
+.company-tile.is-big img { transform: scale(1.35); }
 .company-tile img { max-height: 42px; max-width: 100%; width: auto; object-fit: contain; }
 .company-tile-name { font-size: 12px; font-weight: 600; color: #111113; text-align: center; }
 .tile-sector-badge { position: absolute; top: 8px; right: 8px; padding: 2px 7px; border-radius: 999px; font-size: 9px; font-weight: 700; letter-spacing: .06em; background: var(--chip); color: var(--muted); }
@@ -272,8 +273,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
 /* contact */
 .contact { padding: 0 0 110px; }
-.contact-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px; margin-top: 36px; align-items: start; }
+.contact-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px; margin-top: 36px; align-items: stretch; }
 .contact-list { display: flex; flex-direction: column; gap: 12px; }
+.contact-list .contact-item { flex: 1; }
+.contact-list { height: 100%; }
+.contact-list .social-row { flex: none; }
 .contact-item { display: flex; gap: 14px; align-items: flex-start; padding: 20px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); text-decoration: none; box-shadow: var(--shadow); transition: transform .4s var(--ease); }
 .contact-item:hover { transform: translateY(-4px); }
 .contact-item .icon { width: 20px; height: 20px; color: var(--accent); margin-top: 2px; }
@@ -341,7 +345,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .about-head h2 { font-size: clamp(48px, 6.4vw, 84px); line-height: .98; letter-spacing: -.035em; }
 .about-head h2 .gradient-text { display: inline-block; }
 .about-lede { color: var(--muted); font-size: 17px; font-weight: 400; }
-.about-cards { gap: 18px; }
+.about-cards { gap: 18px; align-items: stretch; }
+.about-card { height: 100%; }
 .about-card { background: rgba(255, 255, 255, .72); border: 1px solid rgba(255, 255, 255, .95); border-radius: 28px; padding: 30px; box-shadow: 0 24px 50px -32px rgba(0, 0, 0, .28); backdrop-filter: blur(10px); }
 [data-theme="dark"] .about-card { background: rgba(19, 19, 22, .72); border-color: var(--line); }
 .about-kicker-row { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
@@ -383,6 +388,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 @media (max-width: 640px) {
   .hl-grid { grid-template-columns: 1fr; }
 }
+
+/* participating companies is always open: no toggle */
+.directory-details summary { display: none; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1100px) {
