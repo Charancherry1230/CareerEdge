@@ -4,7 +4,114 @@
  * Follows senior frontend engineering best practices.
  */
 
+// Marks the page as scriptable so CSS can hide reveal targets until they animate in.
+document.documentElement.classList.add('js');
+
 document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Theme: remembered choice + wave reveal ----------
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('theme-toggle');
+  try {
+    if (localStorage.getItem('fxe-theme') === 'dark') root.dataset.theme = 'dark';
+  } catch (e) { /* storage blocked: keep light */ }
+
+  function syncThemeBtn() {
+    if (!themeBtn) return;
+    const dark = root.dataset.theme === 'dark';
+    themeBtn.setAttribute('aria-pressed', String(dark));
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  // Left-side region of the page is repainted in the new theme along a curved edge.
+  const wavePath = x => {
+    const W = innerWidth, H = innerHeight, d = W * 0.09;
+    return `path('M0 0 L${x + d} 0 C${x + d * 0.4} ${H * 0.3} ${x - d * 0.9} ${H * 0.7} ${x - d} ${H} L0 ${H} Z')`;
+  };
+  function setTheme(next) {
+    if (next === root.dataset.theme) return;
+    const apply = () => {
+      root.dataset.theme = next;
+      try { localStorage.setItem('fxe-theme', next); } catch (e) { /* ignore */ }
+      syncThemeBtn();
+    };
+    if (!document.startViewTransition || reduceMotion) { apply(); return; }
+    const vt = document.startViewTransition(apply);
+    vt.ready.then(() => {
+      const W = innerWidth;
+      root.animate(
+        { clipPath: [wavePath(-W * 0.2), wavePath(W * 1.2)] },
+        { duration: 900, easing: 'cubic-bezier(.65,0,.35,1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    });
+  }
+  themeBtn?.addEventListener('click', () => {
+    setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+  syncThemeBtn();
+
+  // ---------- Sliding pill under the active nav link ----------
+  const primaryNav = document.querySelector('.primary-nav');
+  let navInd = null;
+  if (primaryNav) {
+    navInd = document.createElement('span');
+    navInd.className = 'nav-ind';
+    primaryNav.prepend(navInd);
+  }
+  function placeNav() {
+    if (!navInd) return;
+    const active = primaryNav.querySelector('a[aria-current="page"]');
+    navInd.style.opacity = active ? '1' : '0';
+    if (!active) return;
+    navInd.style.width = active.offsetWidth + 'px';
+    navInd.style.height = active.offsetHeight + 'px';
+    navInd.style.transform = `translate(${active.offsetLeft}px, ${active.offsetTop}px)`;
+  }
+  addEventListener('resize', placeNav);
+  placeNav();
+  document.fonts?.ready.then(placeNav);
+
+  // ---------- Highlights: the arrows and counter step through the nine items ----------
+  const hlItems = [...document.querySelectorAll('.step')];
+  const hlCount = document.getElementById('hlCount');
+  let hlIndex = 0;
+  function renderHighlight() {
+    hlItems.forEach((el, k) => el.classList.toggle('is-on', k === hlIndex));
+    if (hlCount) hlCount.textContent = String(hlIndex + 1).padStart(2, '0') + ' / ' + String(hlItems.length).padStart(2, '0');
+  }
+  document.getElementById('hlPrev')?.addEventListener('click', () => {
+    hlIndex = (hlIndex + hlItems.length - 1) % hlItems.length;
+    renderHighlight();
+  });
+  document.getElementById('hlNext')?.addEventListener('click', () => {
+    hlIndex = (hlIndex + 1) % hlItems.length;
+    renderHighlight();
+  });
+  hlItems.forEach((el, k) => el.addEventListener('click', () => { hlIndex = k; renderHighlight(); }));
+  renderHighlight();
+
+  // ---------- Scroll reveal for cards and sections ----------
+  const revealTargets = document.querySelectorAll(
+    '.section-heading, .track-details, .service-card, .project-card, .stat, .benefit-card, .eligibility-layout > div, .profiler, .contact-item, .contact-form-card, .partner-showcase > div, .cta-banner, .quiet-details'
+  );
+  revealTargets.forEach((el, i) => {
+    el.classList.add('anim');
+    el.style.transitionDelay = `${(i % 4) * 90}ms`;
+  });
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealTargets.forEach(el => revealObserver.observe(el));
+  } else {
+    revealTargets.forEach(el => el.classList.add('in'));
+  }
+
   // ---------- Top Scroll Progress Bar ----------
   const scrollBar = document.getElementById('scroll-progress');
   window.addEventListener('scroll', () => {
@@ -53,24 +160,28 @@ document.addEventListener('DOMContentLoaded', () => {
     .map(link => document.getElementById(link.getAttribute('href').slice(1)))
     .filter(Boolean);
 
-  if ('IntersectionObserver' in window && trackedSections.length) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navAnchorLinks.forEach(link => {
-            const isTarget = link.getAttribute('href') === `#${entry.target.id}`;
-            if (isTarget) {
-              link.setAttribute('aria-current', 'page');
-            } else {
-              link.removeAttribute('aria-current');
-            }
-          });
-        }
-      });
-    }, { rootMargin: '-30% 0px -50% 0px' });
-
-    trackedSections.forEach(section => observer.observe(section));
+  // Active link = the deepest tracked section crossing a line 35% down the viewport.
+  // Highlights sits inside About, so both overlap; document order decides, not observer order.
+  trackedSections.sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1);
+  function updateScrollSpy() {
+    const line = window.innerHeight * 0.35;
+    let active = null;
+    trackedSections.forEach(section => {
+      const r = section.getBoundingClientRect();
+      if (r.top <= line && r.bottom > line) active = section.id;
+    });
+    navAnchorLinks.forEach(link => {
+      if (active && link.getAttribute('href') === `#${active}`) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+    placeNav();
   }
+  window.addEventListener('scroll', updateScrollSpy, { passive: true });
+  window.addEventListener('resize', updateScrollSpy);
+  updateScrollSpy();
 
   // ---------- Hero Trajectory Simulator ----------
   const trajectoryData = {
@@ -108,6 +219,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Programme cards open the matching curriculum before anchor navigation.
+  document.querySelectorAll('[data-track]').forEach(link => {
+    link.addEventListener('click', () => {
+      const details = document.getElementById('track-details');
+      const button = document.querySelector(`[data-domain="${link.dataset.track}"]`);
+      if (details && button) {
+        details.open = true;
+        button.click();
+      }
+    });
+  });
+
   // ---------- Domains Interactive Switcher ----------
   const domainButtons = document.querySelectorAll('.domain-btn');
   const domainPanels = document.querySelectorAll('.domain-panel');
@@ -115,9 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
   domainButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.domain;
-      domainButtons.forEach(b => b.classList.toggle('is-active', b === btn));
+      domainButtons.forEach(b => {
+        b.classList.toggle('is-active', b === btn);
+        b.setAttribute('aria-selected', String(b === btn));
+      });
       domainPanels.forEach(panel => {
         panel.classList.toggle('is-active', panel.id === targetId);
+        panel.setAttribute('aria-hidden', String(panel.id !== targetId));
       });
     });
   });
@@ -261,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const matched = allCompanies.filter(comp => {
       const matchSector = (selectedSector === 'all') || (comp.sectorKey === selectedSector);
       const matchCat = (selectedCategory === 'all') || (comp.categoryGroup === selectedCategory);
-      const matchSearch = comp.name.toLowerCase().includes(filterText.toLowerCase()) || 
+      const matchSearch = comp.name.toLowerCase().includes(filterText.toLowerCase()) ||
                           comp.categoryGroup.toLowerCase().includes(filterText.toLowerCase()) ||
                           comp.sectorName.toLowerCase().includes(filterText.toLowerCase());
       return matchSector && matchCat && matchSearch;
@@ -297,16 +424,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const sectorBadgeClass = comp.sectorKey === 'it' ? 'tile-sector-badge--it' : 'tile-sector-badge--core';
       const sectorLabel = comp.sectorKey === 'it' ? 'IT' : 'CORE';
 
-      const logoImg = comp.file 
-        ? `<img src="assets/brand-logos/${comp.file}" alt="${comp.name} logo" loading="lazy">` 
+      const logoImg = comp.file
+        ? `<img src="assets/brand-logos/${comp.file}" alt="${comp.name} logo" loading="lazy">`
         : `<span class="company-tile-name">${comp.name}</span>`;
 
       return `
-        <button type="button" class="company-tile" 
-          data-name="${comp.name}" 
-          data-sector="${comp.sectorName}" 
-          data-cat="${comp.categoryGroup}" 
-          data-file="${comp.file || ''}" 
+        <button type="button" class="company-tile"
+          data-name="${comp.name}"
+          data-sector="${comp.sectorName}"
+          data-cat="${comp.categoryGroup}"
+          data-file="${comp.file || ''}"
           aria-label="${comp.name} - ${comp.sectorName}">
           <span class="tile-sector-badge ${sectorBadgeClass}">${sectorLabel}</span>
           ${logoImg}
@@ -328,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (inspectorHeading) inspectorHeading.textContent = name;
         if (inspectorSub) inspectorSub.textContent = `Sector: ${sector} • Track: ${cat} • Active Facilitated Hiring Partner`;
         if (inspectorThumb) {
-          inspectorThumb.innerHTML = file 
+          inspectorThumb.innerHTML = file
             ? `<img src="assets/brand-logos/${file}" alt="${name} logo">`
             : `<strong style="font-size:12px; color:var(--blue-900);">${name}</strong>`;
         }
