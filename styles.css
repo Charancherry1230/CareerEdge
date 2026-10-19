@@ -435,3 +435,12 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; }
   .js .anim { opacity: 1; transform: none; }
 }
+
+/* phone polish: stack headings and keep text readable on small screens */
+@media (max-width: 640px) {
+  .about-head { grid-template-columns: 1fr; gap: 20px; }
+  .about-lede { justify-self: stretch; max-width: none; font-size: 16px; border-left-width: 2px; }
+  .about-head h2 { font-size: clamp(40px, 11vw, 56px); }
+  .step { padding: 22px 18px; }
+  .hl-icon { width: 44px; height: 44px; margin-bottom: 12px; }
+}
