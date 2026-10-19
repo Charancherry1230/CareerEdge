@@ -75,7 +75,7 @@ window.COMPANY_BOARDS = [
     "p": 2,
     "g": 16,
     "name": "AMD",
-    "file": "amd.svg",
+    "file": "amd.png",
     "key": "amd",
     "light": false
    },
@@ -490,7 +490,7 @@ window.COMPANY_BOARDS = [
     "p": 5,
     "g": 18,
     "name": "HackerEarth",
-    "file": "hackerearth.svg",
+    "file": "hackerearth.png",
     "key": "hackerearth",
     "light": false
    },
@@ -739,7 +739,7 @@ window.COMPANY_BOARDS = [
     "p": 2,
     "g": 14,
     "name": "AMD (Advanced Micro Devices)",
-    "file": "amd.svg",
+    "file": "amd.png",
     "key": "amd-advanced-micro-devices",
     "light": false
    },
@@ -858,7 +858,7 @@ window.COMPANY_BOARDS = [
     "p": 4,
     "g": 3,
     "name": "Tata Group",
-    "file": "tata.svg",
+    "file": "tata.png",
     "key": "tata-group",
     "light": false
    },
